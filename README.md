@@ -1142,6 +1142,12 @@ program.setFloat("uniformName", 0.5f);
 
 
 
+### Textures
+
+
+
+
+
 ### Transformations and Coordinates
 
 Before we get into transformations, we want to install another helper-library. [GLM][GLM_WEB] (Open**GL** **M**athematics) is commonly used for matrix mathematics which is how we can move, rotate, and scale our elements. 
@@ -1168,7 +1174,7 @@ Before we get into transformations, we want to install another helper-library. [
 
 #### First Transformations
 
-There are three major matrices: the *projection*, *view*, and *model*. We define them like so:
+Ideally, you'd want to understand matrix math. I lack knowledge on matrix math, so this section is mainly for messing around with values. That being said, there are three major matrices: the *projection*, *view*, and *model*. We define them like so:
 
 ```cpp
 // Matrices
@@ -1177,7 +1183,7 @@ glm::mat4 view = glm::mat4(1.0f);
 glm::mat4 projection = glm::mat4(1.0f);
 ```
 
-As of now there purposes are still vague to me, so lets fiddle with some numbers. We do this by transforming the defined matrices with other GLM functions.
+As of now there purposes are still vague to me, so lets fiddle with some numbers. We can do this by transforming the defined matrices with other GLM functions.
 
 ```cpp
 // Transformations          
@@ -1186,7 +1192,7 @@ view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
 projection = glm::perspective( /* Angle in degrees */ 45.0f, (float) WIDTH / (float) HEIGHT, 0.1f, 100.0f);
 ```
 
-These are the starter transformations learnopengl provides us. Now we need to pass these matrices as *uniforms*, sending their data to the GPU, so we can implement the effect.
+These are the starter transformations learnopengl provides us. Transforming matrices is great, but we have yet to send the data to the GPU. let's create uniforms to do so.
 
 ```cpp
 // Creating the matrix uniform locations and transfering data
@@ -1219,6 +1225,28 @@ void main()
 The result, combined with our other code, looks something like this:
 
 <img src="Documentation\6. Transformations\1.PNG" alt="1" style="zoom:80%;" />
+
+
+
+I could have read the documentation, but I think it's much more interesting to experiment yourself. I played around with values in the three aforementioned matrix translation functions, and recorded my findings. This is what I determined:
+
+```cpp
+// Transformations          
+model      = glm::rotate(model, angle °, direction *unit vec3);  
+view       = glm::translate(view, relative position *vec3);
+projection = glm::perspective(distance from camera?, aspect ratio, ?, ?);
+```
+
+The projection was the most difficult to figure out. I checked the documentation after, so here are the corrections:
+
+```cpp
+// Transformations          
+model      = glm::rotate(model, angle °, direction *unit vec3);
+view       = glm::translate(view, relative position *vec3);
+projection = glm::perspective(fov °, aspect ratio, near, far);
+```
+
+
 
 
 

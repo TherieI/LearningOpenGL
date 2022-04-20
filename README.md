@@ -1186,7 +1186,7 @@ view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
 projection = glm::perspective( /* Angle in degrees */ 45.0f, (float) WIDTH / (float) HEIGHT, 0.1f, 100.0f);
 ```
 
-These are the starter transformations learnopengl provides us. Now we need to pass these matrices as *uniforms* and send to the GPU, so we can implement the effect.
+These are the starter transformations learnopengl provides us. Now we need to pass these matrices as *uniforms*, sending their data to the GPU, so we can implement the effect.
 
 ```cpp
 // Creating the matrix uniform locations and transfering data

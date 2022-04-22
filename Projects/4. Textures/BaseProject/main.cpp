@@ -50,18 +50,18 @@ int main() {
     // COMPILE AND CREATE SHADERS
     Shader triangleProgram = Shader("shaders/vertex.shader", "shaders/fragment.shader");
 
-    // VERTEX DATA
+    // Vertex Data
     float vertices[] = {
-         // positions         // colors           // Textures
-         0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // top right
-         0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // bottom right
-        -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left
-        -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // top left 
+        // Positions        // Textures
+        0.5f,  0.5f, 0.0f,  1.0f, 1.0f,   // Top Right
+        0.5f, -0.5f, 0.0f,  1.0f, 0.0f,   // Bottom Right
+       -0.5f, -0.5f, 0.0f,  0.0f, 0.0f,   // Bottom Left
+       -0.5f,  0.5f, 0.0f,  0.0f, 1.0f    // Top Left 
     };
 
     unsigned int indices[]{
-        0, 1, 2,  // 1st triangle
-        0, 2, 3,  // 2nd triangle
+        0, 1, 2,  // 1st Triangle
+        0, 2, 3,  // 2nd Triangle
     };
 
     // Creating Objects to send to GPU
@@ -82,16 +82,12 @@ int main() {
 
     // Specifies the location and data format of the bound VBO to use when rendering
     // Positions
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*) 0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*) 0);
     glEnableVertexAttribArray(0);
 
-    // Colors
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*) (3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
-
     // Textures
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*) (6 * sizeof(float)));
-    glEnableVertexAttribArray(2);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*) (3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
 
     // Getting textures
     stbi_set_flip_vertically_on_load(true);
@@ -117,7 +113,7 @@ int main() {
     }
     stbi_image_free(data);
 
-    triangleProgram.setInt("texture1", 0);
+    triangleProgram.setInt("chadTexture", 0);
     
     // Unbinding
     glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -139,24 +135,6 @@ int main() {
 
         // Activate shader
         triangleProgram.use();
-
-        // Transforms
-        glm::mat4 model = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-        glm::mat4 view = glm::mat4(1.0f);
-        glm::mat4 projection = glm::mat4(1.0f);
-        
-        // glm::rotate(matrix, angle, direction);
-        // model = glm::rotate(model, (float)glfwGetTime() * 100, glm::vec3(sinf((float)glfwGetTime() * 10), 1.0f, sinf((float)glfwGetTime() * 10)));
-        model = glm::rotate(model, -55.0f, glm::vec3(1.0f, 0.0f, 0.0f));
-        // glm::translate(matrix, relative position);
-        view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
-        // glm::perspective(
-        projection = glm::perspective((float) glfwGetTime()*20, (float) WIDTH / (float) HEIGHT, 0.1f, 100.0f);
-
-        // retrieve the matrix uniform locations
-        triangleProgram.setMat4("model", model);
-        triangleProgram.setMat4("view", view);
-        triangleProgram.setMat4("projection", projection);
         
         // Bind the VAO
         glBindVertexArray(VAO);

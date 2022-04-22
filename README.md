@@ -1010,28 +1010,8 @@ void main()
 
 ```cpp
 int main() {
-    // GLFW WINDOW HINTS
-    glfwInit();
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-    // GLFW WINDOW CREATION
-    GLFWwindow* window = glfwCreateWindow(800, 600, "The Real", NULL, NULL);
-    if (window == NULL) {
-        std::cout << "Failed to create GLFW window\n";
-        glfwTerminate();
-        return -1;
-    }
-    glfwMakeContextCurrent(window);
-
-    // GLAD INIT
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-        std::cout << "Failed to initialize GLAD\n";
-        return -1;
-    }
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-
+    
+    /* GLFW and GLAD initialization */
 
     // COMPILE AND CREATE SHADERS
     unsigned int vertexShader = compileShader(getShader("vertex.shader"), GL_VERTEX_SHADER);
@@ -1144,6 +1124,154 @@ program.setFloat("uniformName", 0.5f);
 
 ### Textures
 
+If you're familiar with videogames, you will know that images are drawn to the screen. While they can be drawn mathematically, it is much easier to use a digital image, such as a *png* or *jpg*. Textures are mapped to triangles in OpenGL, and to do this, we need to add another attribute to our vertices: *texture coordinates*.
+
+Here are some vertex positions that ultimately create a rectangle on the screen.
+
+```cpp
+float vertices[] = {
+    // Positions
+    0.5f,  0.5f, 0.0f,  // Top Right
+    0.5f, -0.5f, 0.0f,  // Bottom Right
+   -0.5f, -0.5f, 0.0f,  // Bottom Left
+   -0.5f,  0.5f, 0.0f,  // Top Left 
+};
+unsigned int indices[]{
+    0, 1, 2,  // 1st Triangle
+    0, 2, 3,  // 2nd Triangle
+};
+```
+
+Images are mapped by values from `[0.0f, 1.0f]` in both the x and y directions. Lets try and map the *Top Right* vertex to the *Top Right* of an image.
+
+```cpp
+float vertices[] = {
+    // Positions       // Textures
+    0.5f, 0.5f, 0.0f,  1.0f, 1.0f,   // Top Right
+    
+    /* Excluded Vertices */
+};
+```
+
+And then the rest.
+
+```cpp
+float vertices[] = {
+    // Positions        // Textures
+    0.5f,  0.5f, 0.0f,  1.0f, 1.0f,   // Top Right
+    0.5f, -0.5f, 0.0f,  1.0f, 0.0f,   // Bottom Right
+   -0.5f, -0.5f, 0.0f,  0.0f, 0.0f,   // Bottom Left
+   -0.5f,  0.5f, 0.0f,  0.0f, 1.0f    // Top Left 
+};
+
+unsigned int indices[]{
+    0, 1, 2,  // 1st Triangle
+    0, 2, 3,  // 2nd Triangle
+};
+```
+
+Hopefully, though brief, this explanation makes sense. Now we roughly understand texture coordinates, but how do we actually add images?
+
+#### Loading Images
+
+`stb_image.h` is a popular library by Sean Barrett that deals with common file formats. Like other libraries we need to download and add them to our project files.
+
+1. Download [stb_image.h][STB_DOWNLOAD]
+
+2. |                             Step                             |                          Reference                           |
+   | :----------------------------------------------------------: | :----------------------------------------------------------: |
+   |        Extract `stb-master` and locate `stb_image.h`         | <img src="Documentation\4. Rendering\STB Textures\1.PNG" alt="1" style="zoom:67%;" /> |
+   | Copy `stb_image.h` and add it to your project's includes folder<br />I like to have it in an `stb` folder, like so `..includes/stb/stb_image.h` | <img src="Documentation\4. Rendering\STB Textures\2.PNG" alt="2" style="zoom:67%;" /> |
+
+3. Add the include of the header file. **NOTE**- you need to define `STB_IMAGE_IMPLEMENTATION` before including `stb_image.h`
+   ```cpp
+   #define STB_IMAGE_IMPLEMENTATION
+   #include <stb/stb_image.h>
+   ```
+
+
+
+Now that we have functions to load images, we can add them to our project.
+
+```cpp
+// Getting Texture
+stbi_set_flip_vertically_on_load(true);
+// Generating a texture like we would a buffer
+unsigned int texture;
+glGenTextures(1, &texture);
+glBindTexture(GL_TEXTURE_2D, texture);
+
+// Setting the texture wrapping/filtering options (on the currently bound texture object)
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+// Loading and generating the texture
+int width, height, nrChannels;
+unsigned char* data = stbi_load("image.jpg", &width, &height, &nrChannels, 0);
+if (data)
+{
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+    glGenerateMipmap(GL_TEXTURE_2D);
+}
+else
+{
+    std::cout << "Failed to load texture" << std::endl;
+}
+stbi_image_free(data);
+```
+
+In our shaders...
+
+```glsl
+// Vertex Shader
+#version 330 core
+layout (location = 0) in vec3 aPos;
+layout (location = 1) in vec2 aTexCoord;
+
+out vec2 TexCoord;
+
+void main()
+{
+    gl_Position = vec4(aPos, 1.0);
+    TexCoord = vec2(aTexCoord.x, aTexCoord.y);
+}
+```
+
+```glsl
+// Fragment Shader
+#version 330 core
+    
+out vec4 FragColor;
+in vec2 TexCoord;
+
+// texture samplers
+uniform sampler2D texture1;
+
+void main()
+{
+    FragColor = texture(texture1, TexCoord);
+}
+```
+
+In the render loop...
+
+```cpp
+while (!glfwWindowShouldClose(window)) {
+        
+    /* Key Input and Clearing */
+
+    // bind textures on corresponding texture units
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, texture);
+    
+    /* Drawing Triangles */
+}
+```
+
+<img src="Documentation\4. Rendering\6. Gigachad Texture.PNG" alt="6. Gigachad Texture" style="zoom:80%;" />
+
 
 
 
@@ -1151,8 +1279,6 @@ program.setFloat("uniformName", 0.5f);
 ### Transformations and Coordinates
 
 Before we get into transformations, we want to install another helper-library. [GLM][GLM_WEB] (Open**GL** **M**athematics) is commonly used for matrix mathematics which is how we can move, rotate, and scale our elements. 
-
-
 
 #### Adding GLM
 
@@ -1204,6 +1330,7 @@ triangleProgram.setMat4("projection", projection);
 On the GPU side of things:
 
 ```glsl
+// Vertex Shader
 #version 330 core
 layout (location = 0) in vec3 aPos;
 layout (location = 2) in vec2 aTexCoord;
@@ -1222,13 +1349,29 @@ void main()
 }
 ```
 
+```glsl
+// Fragment Shader
+#version 330 core
+out vec4 FragColor;
+
+in vec2 TexCoord;
+
+// texture samplers
+uniform sampler2D texture1;
+
+void main()
+{
+    FragColor = texture(texture1, TexCoord);
+}
+```
+
 The result, combined with our other code, looks something like this:
 
 <img src="Documentation\6. Transformations\1.PNG" alt="1" style="zoom:80%;" />
 
 
 
-I could have read the documentation, but I think it's much more interesting to experiment yourself. I played around with values in the three aforementioned matrix translation functions, and recorded my findings. This is what I determined:
+I could have read the documentation, but I think it's much more interesting to experiment yourself. I played around with values in the three aforementioned matrix transformation functions, and recorded my findings. This is what I determined:
 
 ```cpp
 // Transformations          
@@ -1246,9 +1389,138 @@ view       = glm::translate(view, relative position *vec3);
 projection = glm::perspective(fov °, aspect ratio, near, far);
 ```
 
+To create loopy animations, we can incorporate GLFW's `glfwGetTime()` inside of a `sin()` function. By messing with values, I created the interesting animation below:
+
+```cpp
+int main() {
+    
+    /* GLFW and GLAD initialization */
+
+    // COMPILE AND CREATE SHADERS
+    Shader triangleProgram = Shader("shaders/vertex.shader", "shaders/fragment.shader");
+
+    // VERTEX DATA
+    float vertices[] = {
+        // positions         // colors           // Textures
+        0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // top right
+        0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // bottom right
+       -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left
+       -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // top left 
+    };
+
+    unsigned int indices[]{
+        0, 1, 2,  // 1st triangle
+        0, 2, 3,  // 2nd triangle
+    };
+
+    // Creating Objects to send to GPU
+    unsigned int VBO, VAO, EBO;
+    glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &VBO);
+    glGenBuffers(1, &EBO);
+
+    // Binding VAO 
+    glBindVertexArray(VAO);
+
+    // Adding vertices to VBO
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), &vertices, GL_STATIC_DRAW);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+    // Specifies the location and data format of the bound VBO to use when rendering
+    // Positions
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*) 0);
+    glEnableVertexAttribArray(0);
+
+    // Colors
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*) (3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
+
+    // Textures
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*) (6 * sizeof(float)));
+    glEnableVertexAttribArray(2);
+
+    // Getting textures
+    stbi_set_flip_vertically_on_load(true);
+    unsigned int texture;
+    glGenTextures(1, &texture);
+    glBindTexture(GL_TEXTURE_2D, texture);
+    // set the texture wrapping/filtering options (on the currently bound texture object)
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    // load and generate the texture
+    int width, height, nrChannels;
+    unsigned char* data = stbi_load("gigachad.jpg", &width, &height, &nrChannels, 0);
+    if (data)
+    {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+    }
+    else
+    {
+        std::cout << "Failed to load texture" << std::endl;
+    }
+    stbi_image_free(data);
+
+    triangleProgram.setInt("texture1", 0);
+
+    // Unbinding
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
 
 
+    // RENDER LOOP
+    while (!glfwWindowShouldClose(window)) {
+        // Key Input
+        handleInput(window);
 
+        // Rendering
+        glClearColor(0.1f, 0.3f, 0.6f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        // bind textures on corresponding texture units
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, texture);
+
+        // Activate shader
+        triangleProgram.use();
+
+        // Transforms
+        glm::mat4 model = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
+        glm::mat4 view = glm::mat4(1.0f);
+        glm::mat4 projection = glm::mat4(1.0f);
+
+        // glm::rotate(matrix, angle, direction);
+        model = glm::rotate(model, (float)glfwGetTime() * 100, glm::vec3(sinf((float)glfwGetTime() * 10), 1.0f, sinf((float)glfwGetTime() * 10)));
+        // glm::translate(matrix, relative position);
+        view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+        // glm::projection(fov °, aspect ratio, near, far);
+        projection = glm::perspective(45.0f, (float) WIDTH / (float) HEIGHT, 0.1f, 100.0f);
+
+        // retrieve the matrix uniform locations
+        triangleProgram.setMat4("model", model);
+        triangleProgram.setMat4("view", view);
+        triangleProgram.setMat4("projection", projection);
+
+        // Bind the VAO
+        glBindVertexArray(VAO);
+
+        // Draw triangle
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+        glBindVertexArray(0);
+
+        glfwSwapBuffers(window);
+        glfwPollEvents();
+    }
+}
+```
+
+<img src="Documentation\6. Transformations\2.gif" alt="2" style="zoom:80%;" />
 
 
 

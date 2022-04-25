@@ -149,7 +149,7 @@ int main() {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);   
     // load and generate the texture
     int width, height, nrChannels;
     unsigned char* data = stbi_load("gigachad.jpg", &width, &height, &nrChannels, 0);
@@ -164,8 +164,120 @@ int main() {
     }
     stbi_image_free(data);
 
-    triangleProgram.setInt("chad", 0);
+    // Practice - Gigachad Planets
+    // RENDER LOOP
+    while (!glfwWindowShouldClose(window)) {
+        // Key Input
+        handleInput(window);
 
+        // Rendering
+        glClearColor(0.1f, 0.3f, 0.6f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        // Activate shader
+        triangleProgram.use();
+
+        // Bind the VAO
+        glBindVertexArray(VAO);
+
+
+        // Transformation inits
+
+        // Rotation
+        glm::vec3 rotDir;
+        float rotVelocity;
+        // Position
+        float velocity;
+
+
+        // Cube 1 (Center)
+
+        // Matrices
+        glm::mat4 model = glm::mat4(1.0f);
+        glm::mat4 view = glm::mat4(1.0f);
+        glm::mat4 projection = glm::mat4(1.0f);
+
+        projection = glm::perspective(45.0f, (float)WIDTH / HEIGHT, 0.1f, 100.0f);  // projection remains the same for all cubes
+
+        // Rotations
+        rotDir = glm::vec3(0.3f, 0.7f, 0.2f);
+        rotVelocity = 75.0f;
+        // Position
+        glm::vec3 cube1Pos = glm::vec3(0.0f, 0.0f, -20.0f);;
+
+        // Transforms
+        model = glm::rotate(model, (float) glfwGetTime() * rotVelocity, rotDir);
+        view = glm::translate(view, cube1Pos);
+
+        // Uniforms
+        triangleProgram.setMat4("model", model);
+        triangleProgram.setMat4("view", view);
+        triangleProgram.setMat4("projection", projection);
+
+        // Draw triangle
+        glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+
+        // Cube 2 (Rotating around Cube 1)
+
+        // Matrices
+        model = glm::mat4(1.0f);
+        view = glm::mat4(1.0f);
+
+        // Rotations
+        rotDir = glm::vec3(0.5f, 0.2f, 0.4f);
+        rotVelocity = 50.0f;
+        // Position
+        velocity = 3.0f;
+        glm::vec3 cube2Pos = glm::vec3(sin((float)glfwGetTime() * velocity) * 4, cos((float)glfwGetTime() * velocity) * 2, -cos((float)glfwGetTime() * velocity) * 8) + cube1Pos;
+
+        // Transforms
+        model = glm::rotate(model, (float) glfwGetTime() * rotVelocity, rotDir);
+        view = glm::translate(view, cube2Pos);
+
+        // Uniforms
+        triangleProgram.setMat4("model", model);
+        triangleProgram.setMat4("view", view);
+        triangleProgram.setMat4("projection", projection);
+
+        // Draw triangle
+        glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+
+        // Cube 3 (Rotating around Cube 1)
+
+        // Matrices
+        model = glm::mat4(1.0f);
+        view = glm::mat4(1.0f);
+
+        // Rotations
+        rotDir = glm::vec3(0.1f, 0.2f, 0.9f);
+        rotVelocity = 100.0f;
+        // Position
+        velocity = 2.0f;
+        glm::vec3 cube3Pos = glm::vec3(sin((float)glfwGetTime() * velocity) * 8, cos((float)glfwGetTime() * velocity) * 2, cos((float)glfwGetTime() * velocity) * 10) + cube1Pos;
+
+        // Transforms
+        model = glm::rotate(model, (float)glfwGetTime() * rotVelocity, rotDir);
+        view = glm::translate(view, cube3Pos);
+
+        // Uniforms
+        triangleProgram.setMat4("model", model);
+        triangleProgram.setMat4("view", view);
+        triangleProgram.setMat4("projection", projection);
+
+        // Draw triangle
+        glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+        glBindVertexArray(0);
+
+        glfwSwapBuffers(window);
+        glfwPollEvents();
+    }
+
+
+    /* Practice - Rotating cube around a cube
+    glm::vec3 baseCubePos = glm::vec3(0.0f, 0.0f, -50.0f);
 
     // RENDER LOOP
     while (!glfwWindowShouldClose(window)) {
@@ -174,7 +286,80 @@ int main() {
 
         // Rendering
         glClearColor(0.1f, 0.3f, 0.6f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        // Activate shader
+        triangleProgram.use();
+
+        // Bind the VAO
+        glBindVertexArray(VAO);
+
+
+        // Cube 1 (Z axis)
+
+        // Matrices
+        glm::mat4 model = glm::mat4(1.0f);
+        glm::mat4 view = glm::mat4(1.0f);
+        glm::mat4 projection = glm::mat4(1.0f);
+      
+        // Transforms
+        glm::vec3 rotDir = glm::vec3(0.3f, 0.7f, 0.2f);
+        glm::vec3 posDir = glm::vec3(0.0f, 0.0f, (float) glfwGetTime() * 4) + baseCubePos;
+
+        model = glm::rotate(model, (float)glfwGetTime() * 75, rotDir);
+        view = glm::translate(view, posDir);
+        projection = glm::perspective(45.0f, (float) WIDTH / HEIGHT, 0.1f, 100.0f);
+
+        // Uniforms
+        triangleProgram.setMat4("model", model);
+        triangleProgram.setMat4("view", view);
+        triangleProgram.setMat4("projection", projection);
+
+        // Draw triangle
+        glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+
+        // Cube 2 (Rotating around Cube 1)
+
+        // Matrices
+        model = glm::mat4(1.0f);
+        view = glm::mat4(1.0f);
+        projection = glm::mat4(1.0f);
+
+        // Transforms
+        rotDir = glm::vec3(0.5f, 0.2f, 0.4f);
+        float rotSpeed = 3.0f;
+
+        glm::vec3 relativeDir = glm::vec3(sin((float) glfwGetTime() * rotSpeed) * 4, cos((float)glfwGetTime() * rotSpeed) * 4, 0.0f) + posDir;
+
+        model = glm::rotate(model, (float) glfwGetTime() * 50, rotDir);
+        view = glm::translate(view, relativeDir);
+        projection = glm::perspective(45.0f, (float)WIDTH / HEIGHT, 0.1f, 100.0f);
+
+        // Uniforms
+        triangleProgram.setMat4("model", model);
+        triangleProgram.setMat4("view", view);
+        triangleProgram.setMat4("projection", projection);
+
+        // Draw triangle
+        glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+        glBindVertexArray(0);
+
+        glfwSwapBuffers(window);
+        glfwPollEvents();
+    }
+    */
+
+
+    /*  Practice - Cube ossilating on the Z-axis 
+    // RENDER LOOP
+    while (!glfwWindowShouldClose(window)) {
+        // Key Input
+        handleInput(window);
+
+        // Rendering
+        glClearColor(0.1f, 0.3f, 0.6f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         // Activate shader
@@ -209,6 +394,7 @@ int main() {
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
+    */
 
     glfwTerminate();
     return 0;

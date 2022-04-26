@@ -18,6 +18,7 @@
 #include <string>
 #include <fstream>
 #include <sstream>
+#include <stack>
 
 
 // Handles Window size changes
@@ -29,11 +30,14 @@ void handle_input(GLFWwindow* window);
 // Interprets txt data to an int array
 std::vector<int> get_data(const char* location);
 
+int partition(std::vector<int> a, int start, int end);
+void iterativeQuicksort(std::vector<int> a, int n);
+
 
 // Screen settings
 const unsigned int WIDTH  = 800;
 const unsigned int HEIGHT = 600;
-
+bool runSort = false;
 
 // delta time
 float deltaTime = 0.0f;	// Time between current frame and last frame
@@ -69,13 +73,14 @@ int main() {
 
     float data_length = 2.0f / sortData.size();  // 2 = 1 - (-1)
     float max_height = *std::max_element(sortData.begin(), sortData.end());  // max in vector
+    float min_height = *std::min_element(sortData.begin(), sortData.end());  // min in vector
 
     float rectangle []{
         // Positions                        // Color
-         data_length / -2.0f, -1.0f,  0.0f,  1.0f, 0.0f, 0.0f,  // BL
-         data_length /  2.0f, -1.0f,  0.0f,  1.0f, 0.0f, 0.0f,  // BR
-         data_length /  2.0f,  1.0f,  0.0f,  0.0f, 0.0f, 0.0f,  // TR
-         data_length / -2.0f,  1.0f,  0.0f,  0.0f, 0.0f, 0.0f,  // TL
+         data_length / -2.0f,  0.0f,  0.0f,  1.0f, 1.0f, 1.0f,  // BL
+         data_length /  2.0f,  0.0f,  0.0f,  1.0f, 1.0f, 1.0f,  // BR
+         data_length /  2.0f,  1.0f,  0.0f,  1.0f, 1.0f, 1.0f,  // TR
+         data_length / -2.0f,  1.0f,  0.0f,  1.0f, 1.0f, 1.0f,  // TL
     };
 
     unsigned int indices[]{
@@ -119,6 +124,7 @@ int main() {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
+
     // RENDER LOOP
     while (!glfwWindowShouldClose(window)) {
 
@@ -130,7 +136,7 @@ int main() {
         handle_input(window);
 
         // Rendering
-        glClearColor(0.1f, 0.3f, 0.6f, 1.0f);
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
         // Activate shader
@@ -150,7 +156,7 @@ int main() {
             view = glm::mat4(1.0f);
             projection = glm::mat4(1.0f);
 
-            view = glm::translate(view, glm::vec3(dx, 0.0f, 0.0f));
+            view = glm::translate(view, glm::vec3(dx, -1.0f, 0.0f));
             dx += data_length;
             
             float height = i / max_height;
@@ -164,6 +170,12 @@ int main() {
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         }
         
+        if (runSort) {
+            iterativeQuicksort(sortData, sortData.size());
+            for (int i : sortData)
+                std::cout << i << " ";
+            runSort = false;
+        }
 
         glBindVertexArray(0);
 
@@ -183,6 +195,9 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 void handle_input(GLFWwindow* window) {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, true);
+    }
+    if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
+        runSort = true;
     }
 }
 
@@ -221,3 +236,74 @@ std::vector<int> get_data(const char* location) {
     }
     return data;
 }
+
+
+// Quicksort source: https://www.techiedelight.com/iterative-implementation-of-quicksort/
+
+int partition(std::vector<int> a, int start, int end)
+{   
+    
+    // Pick the rightmost element as a pivot from the array
+    int pivot = a[end];
+
+    // elements less than the pivot goes to the left of `pIndex`
+    // elements more than the pivot goes to the right of `pIndex`
+    // equal elements can go either way
+    int pIndex = start;
+
+    // each time we find an element less than or equal to the pivot, `pIndex`
+    // is incremented, and that element would be placed before the pivot.
+    for (int i = start; i < end; i++)
+    {
+        if (a[i] <= pivot)
+        {
+            std::swap(a[i], a[pIndex]);
+            pIndex++;
+        }
+    }
+
+    // swap `pIndex` with pivot
+    std::swap(a[pIndex], a[end]);
+
+    // return `pIndex` (index of the pivot element)
+    return pIndex;
+}
+
+// Iterative Quicksort routine
+void iterativeQuicksort(std::vector<int> a, int n)
+{
+    // create a stack of `std::pairs` for storing subarray start and end index
+    std::stack<std::pair<int, int>> s;
+
+    // get the starting and ending index of the given array
+    int start = 0;
+    int end = n - 1;
+
+    // push the start and end index of the array into the stack
+    s.push(std::make_pair(start, end));
+
+    // loop till stack is empty
+    while (!s.empty())
+    {
+        // remove top pair from the list and get subarray starting
+        // and ending indices
+        start = s.top().first, end = s.top().second;
+        s.pop();
+
+        // rearrange elements across pivot
+        int pivot = partition(a, start, end);
+
+        // push subarray indices containing elements that are
+        // less than the current pivot to stack
+        if (pivot - 1 > start) {
+            s.push(std::make_pair(start, pivot - 1));
+        }
+
+        // push subarray indices containing elements that are
+        // more than the current pivot to stack
+        if (pivot + 1 < end) {
+            s.push(std::make_pair(pivot + 1, end));
+        }
+    }
+}
+

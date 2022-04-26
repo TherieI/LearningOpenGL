@@ -13,7 +13,7 @@ void main()
 {
     vec3 pos = aPos;
     if (aPos.y > 0.0f) {
-        pos = vec3(aPos.x, aPos.y * height, aPos.z);
+        pos = vec3(aPos.x, aPos.y * height * 2, aPos.z);
     }
     gl_Position = projection * view * model * vec4(pos, 1.0);
     color = aColor;

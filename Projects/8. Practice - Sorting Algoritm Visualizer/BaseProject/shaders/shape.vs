@@ -16,5 +16,6 @@ void main()
         pos = vec3(aPos.x, aPos.y * height * 2, aPos.z);
     }
     gl_Position = projection * view * model * vec4(pos, 1.0);
+
     color = aColor;
 }

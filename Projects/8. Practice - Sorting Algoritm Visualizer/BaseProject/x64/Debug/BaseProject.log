@@ -3,6 +3,5 @@ P:\Coding\C++\Projects\LearningOpenGL\LearningOpenGL\Projects\8. Practice - Sort
 P:\Coding\C++\Projects\LearningOpenGL\LearningOpenGL\Projects\8. Practice - Sorting Algoritm Visualizer\dependencies\includes\camera\camera.h(90,1): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
 P:\Coding\C++\Projects\LearningOpenGL\LearningOpenGL\Projects\8. Practice - Sorting Algoritm Visualizer\BaseProject\main.cpp(75,22): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
 P:\Coding\C++\Projects\LearningOpenGL\LearningOpenGL\Projects\8. Practice - Sorting Algoritm Visualizer\BaseProject\main.cpp(76,22): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-P:\Coding\C++\Projects\LearningOpenGL\LearningOpenGL\Projects\8. Practice - Sorting Algoritm Visualizer\BaseProject\main.cpp(131,28): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-P:\Coding\C++\Projects\LearningOpenGL\LearningOpenGL\Projects\8. Practice - Sorting Algoritm Visualizer\BaseProject\main.cpp(174,57): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+P:\Coding\C++\Projects\LearningOpenGL\LearningOpenGL\Projects\8. Practice - Sorting Algoritm Visualizer\BaseProject\main.cpp(133,28): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
   BaseProject.vcxproj -> P:\Coding\C++\Projects\LearningOpenGL\LearningOpenGL\Projects\8. Practice - Sorting Algoritm Visualizer\x64\Debug\BaseProject.exe

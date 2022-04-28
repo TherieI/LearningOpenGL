@@ -41,7 +41,7 @@ bool runSort = false;
 float deltaTime = 0.0f;	// Time between current frame and last frame
 float lastFrame = 0.0f; // Time of last frame
 
-float speed = 0.01f;
+float speed = 0.001f;
 
 
 int main() {

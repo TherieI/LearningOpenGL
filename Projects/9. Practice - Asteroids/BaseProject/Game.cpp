@@ -1,106 +1,68 @@
-#pragma once
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
+#include "Game.h"
 
-// GLM
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
+Game::Game(int width, int height) {
+    score = 0;
+    this->width = width;
+    this->height = height;
+}
 
-// STB
-#define STB_IMAGE_IMPLEMENTATION
-#include <stb/stb_image.h>
+void Game::run(GLFWwindow* window) {
+    // gaming mode
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+}
 
-#include <iostream>
-
-#include <shaders/shader.h>
-#include <camera/camera.h>
-
-#include "Ship.h"
-
-
-class Game {
-
-public:
-
-    // Camera
-    Camera camera = Camera(glm::vec3(0.0f, 0.0f, 20.0f));
-
-private:
-
-    unsigned int width, height;
-
-    // delta time
-    float deltaTime = 0.0f;	// Time between current frame and last frame
-    float lastFrame = 0.0f; // Time of last frame
-
-    int score;
-
-public:
-    Game(int width, int height) {
-        score = 0;
-        this->width = width;
-        this->height = height;
+void Game::handleInput(GLFWwindow* window) {
+    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+        glfwSetWindowShouldClose(window, true);
     }
 
-    void run(GLFWwindow* window) {
-        // gaming mode
-        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-    }
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+        camera.ProcessKeyboard(FORWARD, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+        camera.ProcessKeyboard(BACKWARD, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+        camera.ProcessKeyboard(LEFT, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+        camera.ProcessKeyboard(RIGHT, deltaTime);
+}
 
-    void handleInput(GLFWwindow* window) {
-        if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-            glfwSetWindowShouldClose(window, true);
-        }
+void Game::update(GLFWwindow* window, Ship player) {
+    // updates deltaTime
+    float currentFrame = glfwGetTime();
+    deltaTime = currentFrame - lastFrame;
+    lastFrame = currentFrame;
 
-        if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-            camera.ProcessKeyboard(FORWARD, deltaTime);
-        if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-            camera.ProcessKeyboard(BACKWARD, deltaTime);
-        if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-            camera.ProcessKeyboard(LEFT, deltaTime);
-        if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-            camera.ProcessKeyboard(RIGHT, deltaTime);
-    }
+    // bind textures on corresponding texture units
+    glActiveTexture(GL_TEXTURE0);
+    player.texture.use();
 
-    void update(GLFWwindow* window, Ship player) {
-        // updates deltaTime
-        float currentFrame = glfwGetTime();
-        deltaTime = currentFrame - lastFrame;
-        lastFrame = currentFrame;
+    // Bind the VAO
+    glBindVertexArray(player.VAO);
 
-        // bind textures on corresponding texture units
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, player.textureID);
+    // Key Input
+    handleInput(window);
 
-        // Bind the VAO
-        glBindVertexArray(player.VAO);
+    // Rendering
+    glClearColor(0.1f, 0.3f, 0.6f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        // Key Input
-        handleInput(window);
+    player.shader.use();
 
-        // Rendering
-        glClearColor(0.1f, 0.3f, 0.6f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    // Matrices
+    glm::mat4 model = glm::mat4(1.0f);
+    glm::mat4 view = camera.GetViewMatrix();
+    glm::mat4 projection = glm::perspective(90.0f, (float)width / height, 0.1f, 100.0f);  // projection remains the same for all cubes
 
-        player.shader.use();
+    // Uniforms
+    player.shader.setMat4("model", model);
+    player.shader.setMat4("view", view);
+    player.shader.setMat4("projection", projection);
 
-        // Matrices
-        glm::mat4 model = glm::mat4(1.0f);
-        glm::mat4 view = camera.GetViewMatrix();
-        glm::mat4 projection = glm::perspective(90.0f, (float)width / height, 0.1f, 100.0f);  // projection remains the same for all cubes
+    // Draw triangle
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
-        // Uniforms
-        player.shader.setMat4("model", model);
-        player.shader.setMat4("view", view);
-        player.shader.setMat4("projection", projection);
+    glBindVertexArray(0);
 
-        // Draw triangle
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
-        glBindVertexArray(0);
-
-        glfwSwapBuffers(window);
-        glfwPollEvents();
-    }
-};
+    glfwSwapBuffers(window);
+    glfwPollEvents();
+}

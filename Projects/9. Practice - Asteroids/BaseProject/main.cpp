@@ -1,23 +1,7 @@
-#pragma once
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
+#include "main.h"
 
-// GLM
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-
-// STB
-#define STB_IMAGE_IMPLEMENTATION
-#include <stb/stb_image.h>
-
-#include <iostream>
-
-#include <shaders/shader.h>
-#include <camera/camera.h>
-
+#include "Game.h"
 #include "Ship.h"
-#include "Game.cpp"  // has all the includes for GLFW & GLAD
 
 // Screen settings
 const unsigned int WIDTH = 800;
@@ -53,6 +37,7 @@ int main() {
 
     // The game
     Game game = Game(WIDTH, HEIGHT);
+    game.handleInput(window);
 
     // Player
     Ship player = Ship();

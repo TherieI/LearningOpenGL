@@ -3,8 +3,10 @@
 Ship::Ship() {
     shader = Shader("shaders/shape.vs", "shaders/color.fs");
 
+    // Init Positions
+    position = glm::vec3(1.0f, 0.0f, 0.0f);
     velocity = 10.0f;
-    direction = 90.0;
+    direction = 90;
 
     // VERTEX DATA
     float vertices[] = {
@@ -52,7 +54,25 @@ Ship::Ship() {
 
 void Ship::move(Movement dir, float deltaTime) {
     float angle = glm::radians(direction);
-    //cosf();
+
+    glm::vec3 dp = glm::vec3(0.0f);
+
+    if (dir == SHIP_FORWARD) {
+        dp.x = cosf(angle);
+        dp.y = sinf(angle);
+        position += dp * velocity * deltaTime;
+    }
+    if (dir == SHIP_BACKWARD) {
+        dp.x = -cosf(angle);
+        dp.y = -sinf(angle);
+        position += dp * velocity * deltaTime;
+    }
+    if (dir == SHIP_ROTATE_LEFT) {
+        direction += 500 * deltaTime;
+    }
+    if (dir == SHIP_ROTATE_RIGHT) {
+        direction -= 500 * deltaTime;
+    }
 }
 
 void Ship::update(Camera camera) {
@@ -62,9 +82,13 @@ void Ship::update(Camera camera) {
     shader.use();  // Bind Shader
 
     // Matrices
-    model = glm::mat4(1.0f);
-    view = camera.GetViewMatrix();
-    projection = glm::perspective(90.0f, (float) Settings::WIDTH / Settings::HEIGHT, 0.1f, 100.0f);  // projection remains the same for all cubes
+    glm::mat4 model = glm::mat4(1.0f);
+    model = glm::rotate(model, direction - 90, glm::vec3(0.0f, 0.0f, 1.0f));
+
+    glm::mat4 view = camera.GetViewMatrix();
+    view = glm::translate(view, position);
+
+    glm::mat4 projection = glm::perspective(90.0f, (float) Settings::WIDTH / Settings::HEIGHT, 0.1f, 100.0f);  // projection remains the same for all cubes
 
     // Uniforms
     shader.setMat4("model", model);

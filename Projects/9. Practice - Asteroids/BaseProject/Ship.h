@@ -23,8 +23,8 @@ public:
     unsigned int VBO, VAO, EBO;
 
     // Positioning
+    glm::vec3 position;
     float direction, velocity;
-    glm::mat4 model, view, projection;
 
     Ship();
     void move(Movement dir, float deltaTime);

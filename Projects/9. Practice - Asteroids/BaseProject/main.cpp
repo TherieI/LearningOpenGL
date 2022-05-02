@@ -3,9 +3,6 @@
 #include "Game.h"
 #include "Ship.h"
 
-// Screen settings
-const unsigned int WIDTH = 800;
-const unsigned int HEIGHT = 600;
 
 // Handles Window size changes
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -19,7 +16,7 @@ int main() {
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     // GLFW WINDOW CREATION
-    GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "The Real", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(Settings::WIDTH, Settings::HEIGHT, "The Real", NULL, NULL);
     if (window == NULL) {
         std::cout << "Failed to create GLFW window\n";
         glfwTerminate();
@@ -36,16 +33,11 @@ int main() {
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
     // The game
-    Game game = Game(WIDTH, HEIGHT);
-    game.handleInput(window);
-
-    // Player
-    Ship player = Ship();
+    Game game = Game();
 
     // RENDER LOOP
     while (!glfwWindowShouldClose(window)) {
-
-        game.update(window, player);
+        game.update(window);
     }
 
     glfwTerminate();

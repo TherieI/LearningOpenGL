@@ -2,6 +2,10 @@
 
 Ship::Ship() {
     shader = Shader("shaders/shape.vs", "shaders/color.fs");
+
+    velocity = 10.0f;
+    direction = 90.0;
+
     // VERTEX DATA
     float vertices[] = {
         // Positions          // Texture
@@ -31,7 +35,6 @@ Ship::Ship() {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-
     // Specifies the location and data format of the bound VBO to use when rendering
     // Positions
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
@@ -47,6 +50,32 @@ Ship::Ship() {
     texture = Image("assets/ship.png", GL_RGBA);
 }
 
-void Ship::handleInput() {
+void Ship::move(Movement dir, float deltaTime) {
+    float angle = glm::radians(direction);
+    //cosf();
+}
 
+void Ship::update(Camera camera) {
+    // BINDING
+    texture.use();  // Bind textures on corresponding texture units
+    glBindVertexArray(VAO);  // Bind the VAO
+    shader.use();  // Bind Shader
+
+    // Matrices
+    model = glm::mat4(1.0f);
+    view = camera.GetViewMatrix();
+    projection = glm::perspective(90.0f, (float) Settings::WIDTH / Settings::HEIGHT, 0.1f, 100.0f);  // projection remains the same for all cubes
+
+    // Uniforms
+    shader.setMat4("model", model);
+    shader.setMat4("view", view);
+    shader.setMat4("projection", projection);
+
+    // Draw
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+    // Unbinding
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glBindVertexArray(0);
+    glUseProgram(0);
 }

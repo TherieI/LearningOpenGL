@@ -2,13 +2,13 @@
 #include "Image.h"
 
 Image::Image() {
-    textureID = 0;
+    ID = 0;
 }
 
 Image::Image(const char* image_location, GLenum type) {
     stbi_set_flip_vertically_on_load(true);
-    glGenTextures(1, &textureID);
-    glBindTexture(GL_TEXTURE_2D, textureID);
+    glGenTextures(1, &ID);
+    glBindTexture(GL_TEXTURE_2D, ID);
 
     // Enabling PNG transparency
     glEnable(GL_BLEND);
@@ -36,6 +36,6 @@ Image::Image(const char* image_location, GLenum type) {
 }
 
 void Image::use() {
-    glBindTexture(GL_TEXTURE_2D, textureID);
+    glBindTexture(GL_TEXTURE_2D, ID);
 }
 

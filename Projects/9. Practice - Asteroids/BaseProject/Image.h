@@ -5,7 +5,7 @@
 
 class Image {
 public:
-	unsigned int textureID;
+	unsigned int ID;
 
 	Image();
 	Image(const char* image_location, GLenum type);

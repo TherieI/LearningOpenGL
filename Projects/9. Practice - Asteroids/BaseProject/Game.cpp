@@ -1,9 +1,7 @@
 #include "Game.h"
 
-Game::Game(int width, int height) {
+Game::Game() {
     score = 0;
-    this->width = width;
-    this->height = height;
 }
 
 void Game::run(GLFWwindow* window) {
@@ -26,42 +24,20 @@ void Game::handleInput(GLFWwindow* window) {
         camera.ProcessKeyboard(RIGHT, deltaTime);
 }
 
-void Game::update(GLFWwindow* window, Ship player) {
+void Game::update(GLFWwindow* window) {
     // updates deltaTime
     float currentFrame = glfwGetTime();
     deltaTime = currentFrame - lastFrame;
     lastFrame = currentFrame;
 
-    // bind textures on corresponding texture units
-    glActiveTexture(GL_TEXTURE0);
-    player.texture.use();
-
-    // Bind the VAO
-    glBindVertexArray(player.VAO);
-
-    // Key Input
-    handleInput(window);
-
     // Rendering
     glClearColor(0.1f, 0.3f, 0.6f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    player.shader.use();
+    player.update(camera);
 
-    // Matrices
-    glm::mat4 model = glm::mat4(1.0f);
-    glm::mat4 view = camera.GetViewMatrix();
-    glm::mat4 projection = glm::perspective(90.0f, (float)width / height, 0.1f, 100.0f);  // projection remains the same for all cubes
-
-    // Uniforms
-    player.shader.setMat4("model", model);
-    player.shader.setMat4("view", view);
-    player.shader.setMat4("projection", projection);
-
-    // Draw triangle
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
-    glBindVertexArray(0);
+    // Key Input
+    handleInput(window);
 
     glfwSwapBuffers(window);
     glfwPollEvents();

@@ -2,16 +2,18 @@
 #include <camera/camera.h>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+
+#include "Settings.h"
 #include "Ship.h"
+
 
 class Game {
 
 public:
     Camera camera = Camera(glm::vec3(0.0f, 0.0f, 20.0f));
+    Ship player = Ship();
 
 private:
-
-    unsigned int width, height;
 
     // delta time
     float deltaTime = 0.0f;	// Time between current frame and last frame
@@ -20,11 +22,11 @@ private:
     int score;
 
 public:
-    Game(int width, int height);
+    Game();
 
     void run(GLFWwindow* window);
 
     void handleInput(GLFWwindow* window);
 
-    void update(GLFWwindow* window, Ship player);
+    void update(GLFWwindow* window);
 };

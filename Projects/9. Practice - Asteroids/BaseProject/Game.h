@@ -3,6 +3,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include "Image.h"
 #include "Settings.h"
 #include "Ship.h"
 
@@ -10,8 +11,9 @@
 class Game {
 
 public:
-    Camera camera = Camera(glm::vec3(0.0f, 0.0f, 20.0f));
+    Camera camera = Camera(glm::vec3(0.0f, 0.0f, 0.0f));
     Ship player = Ship();
+    Image background = Image("assets/background.png", GL_RGB);
 
 private:
 

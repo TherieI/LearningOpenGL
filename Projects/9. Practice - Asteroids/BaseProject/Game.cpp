@@ -31,10 +31,10 @@ void Game::update(GLFWwindow* window) {
     lastFrame = currentFrame;
 
     // Rendering
-    glClearColor(0.1f, 0.3f, 0.6f, 1.0f);
+    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    player.update(camera);
+    player.update(camera, deltaTime);
 
     // Key Input
     handleInput(window);

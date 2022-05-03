@@ -4,9 +4,10 @@ Ship::Ship() {
     shader = Shader("shaders/shape.vs", "shaders/color.fs");
 
     // Init Positions
-    position = glm::vec3(1.0f, 0.0f, 0.0f);
-    velocity = 10.0f;
-    direction = 90;
+    position = glm::vec3(0.0f, 0.0f, -10.0f);
+    velocity = glm::vec3(0.0f);
+    acceleration = glm::vec3(5.0f);
+    direction = 90.0f;
 
     // VERTEX DATA
     float vertices[] = {
@@ -49,7 +50,7 @@ Ship::Ship() {
     // Unbinding
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
-    texture = Image("assets/ship.png", GL_RGBA);
+    texture = Image("assets/ship1.png", GL_RGBA);
 }
 
 void Ship::move(Movement dir, float deltaTime) {
@@ -60,26 +61,31 @@ void Ship::move(Movement dir, float deltaTime) {
     if (dir == SHIP_FORWARD) {
         dp.x = cosf(angle);
         dp.y = sinf(angle);
-        position += dp * velocity * deltaTime;
+        velocity += dp * acceleration * deltaTime;
     }
     if (dir == SHIP_BACKWARD) {
         dp.x = -cosf(angle);
         dp.y = -sinf(angle);
-        position += dp * velocity * deltaTime;
+        velocity += dp * acceleration * deltaTime;
     }
     if (dir == SHIP_ROTATE_LEFT) {
-        direction += 500 * deltaTime;
+        direction += 270 * deltaTime;
     }
     if (dir == SHIP_ROTATE_RIGHT) {
-        direction -= 500 * deltaTime;
+        direction -= 270 * deltaTime;
     }
 }
 
-void Ship::update(Camera camera) {
+void Ship::update(Camera camera, float deltaTime) {
     // BINDING
     texture.use();  // Bind textures on corresponding texture units
     glBindVertexArray(VAO);  // Bind the VAO
     shader.use();  // Bind Shader
+
+    // New position
+    position += velocity * deltaTime;
+    slow(deltaTime);
+    inBounds();
 
     // Matrices
     glm::mat4 model = glm::mat4(1.0f);
@@ -102,4 +108,26 @@ void Ship::update(Camera camera) {
     glBindTexture(GL_TEXTURE_2D, 0);
     glBindVertexArray(0);
     glUseProgram(0);
+}
+
+
+void Ship::slow(float deltaTime) {
+    glm::vec3 unit = glm::normalize(velocity);
+    if (abs(velocity.x) > 0) {
+        velocity.x -= unit.x * acceleration.x / 4 * deltaTime;
+    }
+    if (abs(velocity.y) > 0) {
+        velocity.y -= unit.y * acceleration.y / 4 * deltaTime;
+    }
+}
+
+void Ship::inBounds() {
+    std::cout << position.x << " " << position.y << std::endl;
+
+    if (abs(position.x) > 20.0f) {
+        position.x = -abs(position.x) / position.x * 20.0f;
+    }
+    if (abs(position.y) > 20.0f) {
+        position.y = -abs(position.y) / position.y * 20.0f;
+    }
 }

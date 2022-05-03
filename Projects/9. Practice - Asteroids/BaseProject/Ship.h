@@ -23,10 +23,14 @@ public:
     unsigned int VBO, VAO, EBO;
 
     // Positioning
-    glm::vec3 position;
-    float direction, velocity;
+    glm::vec3 position, velocity, acceleration;
+    float direction;
 
     Ship();
     void move(Movement dir, float deltaTime);
-    void update(Camera camera);
+    void update(Camera camera, float deltaTime);
+
+private:
+    void slow(float deltaTime);
+    void inBounds();
 };

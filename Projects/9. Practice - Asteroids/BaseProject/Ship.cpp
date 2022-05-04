@@ -1,26 +1,23 @@
 #include "Ship.h"
 
-Ship::Ship(std::vector<float> vertexData = {
-    // Positions          // Texture
-    -0.5f, -0.5f,  0.0f,  0.0f, 0.0f, // BL
-     0.5f, -0.5f,  0.0f,  1.0f, 0.0f, // BR
-     0.5f,  0.5f,  0.0f,  1.0f, 1.0f, // TR
-    -0.5f,  0.5f,  0.0f,  0.0f, 1.0f, // TL
+Ship::Ship() : 
+    GameObject(  // Default construction inputs
+    {
+        // Positions          // Texture
+        -0.5f, -0.5f,  0.0f,  0.0f, 0.0f, // BL
+         0.5f, -0.5f,  0.0f,  1.0f, 0.0f, // BR
+         0.5f,  0.5f,  0.0f,  1.0f, 1.0f, // TR
+        -0.5f,  0.5f,  0.0f,  0.0f, 1.0f, // TL
+    }, {
+         0,  1,  2,  // 1st triangle
+         0,  2,  3,  // 2nd triangle
     }, 
-    std::vector<unsigned int> indexData = {
-        // Each triangle pair represents a side of a cube
-        0,  1,  2,  // 1st triangle
-        0,  2,  3,  // 2nd triangle
-    }, 
-    Shader shader, 
-    Image texture) :
-    
-    _vertexData(vertexData), _indexData(indexData), _shader(shader), _texture(texture) {
-
-    std::cout << "made it here";
-
+    Shader("shaders/ship.vs", "shaders/ship.fs"), 
+    Image("assets/ship.png", GL_RGBA),
+    glm::vec3(0.0f, 0.0f, -10.0f)  // Position
+    )
+{
     // Init Positions
-    position = glm::vec3(0.0f, 0.0f, -10.0f);
     velocity = glm::vec3(0.0f);
     acceleration = glm::vec3(5.0f);
     direction = 90.0f;
@@ -65,9 +62,11 @@ void Ship::update(Camera camera, float deltaTime) {
     glm::mat4 projection = glm::perspective(90.0f, (float) Settings::WIDTH / Settings::HEIGHT, 0.1f, 100.0f);  // projection remains the same for all cubes
 
     // Uniforms
+    shader.use();
     shader.setMat4("model", model);
     shader.setMat4("view", view);
     shader.setMat4("projection", projection);
+    glUseProgram(0);
 }
 
 
@@ -82,7 +81,6 @@ void Ship::slow(float deltaTime) {
 }
 
 void Ship::inBounds() {
-    // std::cout << position.x << " " << position.y << std::endl;
 
     if (abs(position.x) > 20.0f) {
         position.x = -abs(position.x) / position.x * 20.0f;

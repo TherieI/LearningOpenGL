@@ -35,8 +35,32 @@ int main() {
     // The game
     Game game = Game();
 
+    GameObject background = GameObject(
+        {
+            // Positions          // Texture
+            -1.0f, -1.0f,  0.0f,  0.0f, 0.0f, // BL
+             1.0f, -1.0f,  0.0f,  1.0f, 0.0f, // BR
+             1.0f,  1.0f,  0.0f,  1.0f, 1.0f, // TR
+            -1.0f,  1.0f,  0.0f,  0.0f, 1.0f, // TL
+        },
+        {
+             0,  1,  2,  // 1st triangle
+             0,  2,  3,  // 2nd triangle
+        },
+        Shader("shaders/background.vs", "shaders/background.fs"),
+        Image("assets/background.png", GL_RGBA),
+        glm::vec3(0.0f, 0.0f, -1.0f)
+    );
+
+
     // RENDER LOOP
     while (!glfwWindowShouldClose(window)) {
+        glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        background.update(game.camera, game.getDeltaTime());
+        background.draw();
+
         game.update(window);
     }
 

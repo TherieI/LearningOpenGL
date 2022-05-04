@@ -31,9 +31,6 @@ void Game::update(GLFWwindow* window) {
     lastFrame = currentFrame;
 
     // Rendering
-    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
     player.update(camera, deltaTime);
     player.draw();
 
@@ -42,4 +39,8 @@ void Game::update(GLFWwindow* window) {
 
     glfwSwapBuffers(window);
     glfwPollEvents();
+}
+
+float Game::getDeltaTime() {
+    return deltaTime;
 }

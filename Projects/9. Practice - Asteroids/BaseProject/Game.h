@@ -13,7 +13,6 @@ class Game {
 public:
     Camera camera = Camera(glm::vec3(0.0f, 0.0f, 0.0f));
     Ship player = Ship();
-    Image background = Image("assets/background.png", GL_RGB);
 
 private:
 
@@ -31,4 +30,6 @@ public:
     void handleInput(GLFWwindow* window);
 
     void update(GLFWwindow* window);
+
+    float getDeltaTime();
 };

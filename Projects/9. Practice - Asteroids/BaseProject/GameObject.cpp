@@ -1,28 +1,8 @@
 #include "GameObject.h"
 
-GameObject::GameObject(std::vector<float> vertexData, std::vector<unsigned int> indexData, Shader shader, Image texture) {
-
-    std::cout << "SIZE: " << vertexData.size();
-
-    vertexData = {
-        // Positions          // Texture
-        -0.5f, -0.5f,  0.0f,  0.0f, 0.0f, // BL
-         0.5f, -0.5f,  0.0f,  1.0f, 0.0f, // BR
-         0.5f,  0.5f,  0.0f,  1.0f, 1.0f, // TR
-        -0.5f,  0.5f,  0.0f,  0.0f, 1.0f, // TL
-    };
-
-    std::cout << "SHADER ID " << shader.ID;
-
-    indexData = {
-        // Each triangle pair represents a side of a cube
-        0,  1,  2,  // 1st triangle
-        0,  2,  3,  // 2nd triangle
-    };
-
-    std::cout << "SIZE: " << vertexData.size();
-
+GameObject::GameObject(std::vector<float> vertexData, std::vector<unsigned int> indexData, Shader shader, Image texture, glm::vec3 position) {
     indices = indexData;
+    this->position = position;
 
     // Creating Objects to send to GPU
     glGenVertexArrays(1, &VAO);
@@ -57,16 +37,19 @@ GameObject::GameObject(std::vector<float> vertexData, std::vector<unsigned int> 
     this->texture = texture;
 }
 
-void GameObject::update(Camera camera, float deltaTime) {  // Override to do your own transformations
+void GameObject::update(Camera camera, float deltaTime) {
     // Matrices
     glm::mat4 model = glm::mat4(1.0f);
     glm::mat4 view = camera.GetViewMatrix();
+    view = glm::translate(view, position);
     glm::mat4 projection = glm::perspective(90.0f, (float)Settings::WIDTH / Settings::HEIGHT, 0.1f, 100.0f);  // projection remains the same for all cubes
 
     // Uniforms
+    shader.use();
     shader.setMat4("model", model);
     shader.setMat4("view", view);
     shader.setMat4("projection", projection);
+    glUseProgram(0);
 }
 
 void GameObject::draw() {

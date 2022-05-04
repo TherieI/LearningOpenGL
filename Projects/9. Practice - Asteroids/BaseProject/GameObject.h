@@ -17,7 +17,9 @@ public:
     std::vector<unsigned int> indices;
     unsigned int VBO, VAO, EBO;
 
-    GameObject(std::vector<float> vertexData, std::vector<unsigned int> indexData, Shader shader, Image texture);
+    glm::vec3 position;
+
+    GameObject(std::vector<float> vertexData, std::vector<unsigned int> indexData, Shader shader, Image texture, glm::vec3 position);
     void update(Camera camera, float deltaTime);
     void draw();
 

@@ -59,7 +59,7 @@ void Ship::update(Camera camera, float deltaTime) {
     glm::mat4 view = camera.GetViewMatrix();
     view = glm::translate(view, position);
 
-    glm::mat4 projection = glm::perspective(90.0f, (float) Settings::WIDTH / Settings::HEIGHT, 0.1f, 100.0f);  // projection remains the same for all cubes
+    glm::mat4 projection = glm::perspective(Settings::FOV, (float) Settings::WIDTH / Settings::HEIGHT, 0.1f, 100.0f);
 
     // Uniforms
     shader.use();
@@ -77,15 +77,5 @@ void Ship::slow(float deltaTime) {
     }
     if (abs(velocity.y) > 0) {
         velocity.y -= unit.y * acceleration.y / 4 * deltaTime;
-    }
-}
-
-void Ship::inBounds() {
-
-    if (abs(position.x) > 20.0f) {
-        position.x = -abs(position.x) / position.x * 20.0f;
-    }
-    if (abs(position.y) > 20.0f) {
-        position.y = -abs(position.y) / position.y * 20.0f;
     }
 }

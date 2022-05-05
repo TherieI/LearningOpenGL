@@ -42,7 +42,7 @@ void GameObject::update(Camera camera, float deltaTime) {
     glm::mat4 model = glm::mat4(1.0f);
     glm::mat4 view = camera.GetViewMatrix();
     view = glm::translate(view, position);
-    glm::mat4 projection = glm::perspective(90.0f, (float)Settings::WIDTH / Settings::HEIGHT, 0.1f, 100.0f);  // projection remains the same for all cubes
+    glm::mat4 projection = glm::perspective(Settings::FOV, (float)Settings::WIDTH / Settings::HEIGHT, 0.1f, 100.0f);  // projection remains the same for all cubes
 
     // Uniforms
     shader.use();
@@ -68,4 +68,18 @@ void GameObject::unbindAll() {
     glBindTexture(GL_TEXTURE_2D, 0);
     glBindVertexArray(0);
     glUseProgram(0);
+}
+
+void GameObject::inBounds() {
+    // std::cout << position.x << " " << position.y << std::endl;
+
+    float max_x = 13.5f;
+    float max_y = 10.0f;
+
+    if (abs(position.x) > max_x) {
+        position.x = -abs(position.x) / position.x * max_x;
+    }
+    if (abs(position.y) > max_y) {
+        position.y = -abs(position.y) / position.y * max_y;
+    }
 }

@@ -22,6 +22,7 @@ public:
     GameObject(std::vector<float> vertexData, std::vector<unsigned int> indexData, Shader shader, Image texture, glm::vec3 position);
     void update(Camera camera, float deltaTime);
     void draw();
+    void inBounds();
 
 private:
     void bindAll();

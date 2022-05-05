@@ -159,12 +159,14 @@
     <ClCompile Include="glad.c" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="Ship.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Image.h" />
     <ClInclude Include="main.h" />
+    <ClInclude Include="Projectile.h" />
     <ClInclude Include="Settings.h" />
     <ClInclude Include="Ship.h" />
   </ItemGroup>

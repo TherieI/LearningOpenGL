@@ -6,6 +6,7 @@
 #include "Image.h"
 #include "Settings.h"
 #include "Ship.h"
+#include "Projectile.h"
 
 
 class Game {
@@ -13,6 +14,10 @@ class Game {
 public:
     Camera camera = Camera(glm::vec3(0.0f, 0.0f, 0.0f));
     Ship player = Ship();
+
+    // Handling projectiles
+    std::vector<Projectile> projectiles {};
+    float cooldown = 0.0f;
 
 private:
 
@@ -32,4 +37,9 @@ public:
     void update(GLFWwindow* window);
 
     float getDeltaTime();
+
+private:
+    void updateProjectiles();
+    void updateCooldown();
+    void shoot(Projectile_Type ptype);
 };

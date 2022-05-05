@@ -30,5 +30,4 @@ public:
 
 private:
     void slow(float deltaTime);
-    void inBounds();
 };

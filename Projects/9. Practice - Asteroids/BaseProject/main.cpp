@@ -49,7 +49,7 @@ int main() {
         },
         Shader("shaders/background.vs", "shaders/background.fs"),
         Image("assets/background.png", GL_RGBA),
-        glm::vec3(0.0f, 0.0f, -1.0f)
+        glm::vec3(0.0f, 0.2f, -1.0f)
     );
 
 

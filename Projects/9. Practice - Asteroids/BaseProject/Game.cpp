@@ -78,3 +78,19 @@ void Game::shoot(Projectile_Type ptype) {
     Projectile p = Projectile(player.direction, player.position, ptype);
     projectiles.push_back(p);
 }
+
+void Game::spawnAsteroid() {
+    Asteroid a = Asteroid(45.0f, glm::vec3(0.0f, 0.0f, 0.0f));
+    asteroids.push_back(a);
+}
+
+void Game::updateAsteroids() {
+    for (int i = asteroids.size() - 1; i >= 0; i--) {
+        if (!projectiles[i].isAlive()) {
+            projectiles.erase(projectiles.begin() + i);
+            break;
+        }
+        projectiles[i].update(camera, deltaTime);
+        projectiles[i].draw();
+    }
+}

@@ -7,16 +7,22 @@
 #include "Settings.h"
 #include "Ship.h"
 #include "Projectile.h"
+#include "Asteriod.h"
 
 
 class Game {
 
 public:
     Camera camera = Camera(glm::vec3(0.0f, 0.0f, 0.0f));
+
+    // player
     Ship player = Ship();
 
+    // Asteroids
+    std::vector<Asteroid> asteroids{};
+
     // Handling projectiles
-    std::vector<Projectile> projectiles {};
+    std::vector<Projectile> projectiles{};
     float cooldown = 0.0f;
 
 private:
@@ -42,4 +48,6 @@ private:
     void updateProjectiles();
     void updateCooldown();
     void shoot(Projectile_Type ptype);
+    void spawnAsteroid();
+    void updateAsteroids();
 };

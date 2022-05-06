@@ -1,5 +1,6 @@
 #pragma once
 #include <camera/camera.h>
+#include <vector>
 
 #include "Settings.h"
 #include "GameObject.h"
@@ -21,7 +22,10 @@ private:
     bool alive = true;
 
 public:
-    Asteroid(float t_direction, glm::vec3 t_velocity);
+    Asteroid(float t_direction, glm::vec3 t_position, Asteroid_Type t_atype);
     void update(Camera camera, float deltaTime);
     bool isAlive();
+
+private:
+    std::vector<float> getVertices(Asteroid_Type t_atype);
 };

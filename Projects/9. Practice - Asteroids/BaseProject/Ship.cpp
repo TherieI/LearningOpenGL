@@ -14,7 +14,7 @@ Ship::Ship() :
     }, 
     Shader("shaders/ship.vs", "shaders/ship.fs"), 
     Image("assets/ship.png", GL_RGBA),
-    glm::vec3(0.0f, 0.0f, -10.0f)  // Position
+    glm::vec3(0.0f, 0.0f, Settings::ENTITY_DEPTH)  // Position
     )
 {
     // Init Positions

@@ -1,13 +1,44 @@
 #include "Asteriod.h"
 
-Asteroid::Asteroid(float t_direction, glm::vec3 t_position) :
-    GameObject({
-    // Positions          // Texture
-    -0.5f, -0.5f,  0.0f,  0.0f, 0.0f, // BL
-     0.5f, -0.5f,  0.0f,  1.0f, 0.0f, // BR
-     0.5f,  0.5f,  0.0f,  1.0f, 1.0f, // TR
-    -0.5f,  0.5f,  0.0f,  0.0f, 1.0f, // TL
-        }, {
+std::vector<float> Asteroid::getVertices(Asteroid_Type atype) {
+    std::vector<float> vertices;
+
+    switch (atype) {
+        case ASTEROID_BIG:
+            vertices = {
+                // Positions          // Texture
+                -1.0f, -1.0f,  0.0f,  0.0f, 0.0f, // BL
+                 1.0f, -1.0f,  0.0f,  1.0f, 0.0f, // BR
+                 1.0f,  1.0f,  0.0f,  1.0f, 1.0f, // TR
+                -1.0f,  1.0f,  0.0f,  0.0f, 1.0f, // TL
+            };
+            break;
+        case ASTEROID_MEDIUM:
+            vertices = {
+                // Positions          // Texture
+                -0.5f, -0.5f,  0.0f,  0.0f, 0.0f, // BL
+                 0.5f, -0.5f,  0.0f,  1.0f, 0.0f, // BR
+                 0.5f,  0.5f,  0.0f,  1.0f, 1.0f, // TR
+                -0.5f,  0.5f,  0.0f,  0.0f, 1.0f, // TL
+            };
+            break;
+        case ASTEROID_SMALL:
+            vertices = {
+                // Positions          // Texture
+                -0.3f, -0.3f,  0.0f,  0.0f, 0.0f, // BL
+                 0.3f, -0.3f,  0.0f,  1.0f, 0.0f, // BR
+                 0.3f,  0.3f,  0.0f,  1.0f, 1.0f, // TR
+                -0.3f,  0.3f,  0.0f,  0.0f, 1.0f, // TL
+            };
+            break;
+    }
+    return vertices;
+}
+
+Asteroid::Asteroid(float t_direction, glm::vec3 t_position, Asteroid_Type t_atype) :
+    GameObject(
+        getVertices(t_atype), 
+        {
              0,  1,  2,  // 1st triangle
              0,  2,  3,  // 2nd triangle
         },
@@ -25,6 +56,7 @@ Asteroid::Asteroid(float t_direction, glm::vec3 t_position) :
 
 
 void Asteroid::update(Camera camera, float deltaTime) {
+    std::cout << position.x << " " << position.y << std::endl;
     // New position
     inBounds();  // make sure we are in bounds
     position += velocity * deltaTime;

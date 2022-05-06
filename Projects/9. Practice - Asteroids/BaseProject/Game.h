@@ -4,6 +4,9 @@
 #include <GLFW/glfw3.h>
 
 #include "Image.h"
+#include <stdlib.h>     /* srand, rand */
+#include <time.h>       /* time */
+
 #include "Settings.h"
 #include "Ship.h"
 #include "Projectile.h"
@@ -35,19 +38,15 @@ private:
 
 public:
     Game();
-
     void run(GLFWwindow* window);
-
     void handleInput(GLFWwindow* window);
-
     void update(GLFWwindow* window);
-
+    void spawnAsteroid(Asteroid_Type asize);
     float getDeltaTime();
 
 private:
     void updateProjectiles();
     void updateCooldown();
     void shoot(Projectile_Type ptype);
-    void spawnAsteroid();
     void updateAsteroids();
 };

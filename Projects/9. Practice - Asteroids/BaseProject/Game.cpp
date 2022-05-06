@@ -2,6 +2,7 @@
 
 Game::Game() {
     score = 0;
+    srand(time(NULL));
 }
 
 void Game::run(GLFWwindow* window) {
@@ -34,6 +35,7 @@ void Game::update(GLFWwindow* window) {
 
     // update projectiles
     updateProjectiles();
+    updateAsteroids();
     updateCooldown();
 
     // Rendering
@@ -55,12 +57,12 @@ void Game::updateProjectiles() {
     // std::cout << projectiles.size() << std::endl;
 
     for (int i = projectiles.size() - 1; i >= 0; i--) {
-        if (!projectiles[i].isAlive()) {
-            projectiles.erase(projectiles.begin() + i);
-            break;
-        }
         projectiles[i].update(camera, deltaTime);
         projectiles[i].draw();
+
+        if (!projectiles[i].isAlive()) {
+            projectiles.erase(projectiles.begin() + i);
+        }
     }
 }
 
@@ -79,18 +81,22 @@ void Game::shoot(Projectile_Type ptype) {
     projectiles.push_back(p);
 }
 
-void Game::spawnAsteroid() {
-    Asteroid a = Asteroid(45.0f, glm::vec3(0.0f, 0.0f, 0.0f));
+void Game::spawnAsteroid(Asteroid_Type asize) {
+    float r = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);  // random float between 0 and 1
+    float dir;
+
+    Asteroid a = Asteroid(45.0f, glm::vec3(0.0f, 0.0f, Settings::ENTITY_DEPTH), asize);
     asteroids.push_back(a);
 }
 
 void Game::updateAsteroids() {
+    std::cout << asteroids.size();
     for (int i = asteroids.size() - 1; i >= 0; i--) {
-        if (!projectiles[i].isAlive()) {
-            projectiles.erase(projectiles.begin() + i);
-            break;
+        asteroids[i].update(camera, deltaTime);
+        asteroids[i].draw();
+
+        if (!asteroids[i].isAlive()) {
+            asteroids.erase(asteroids.begin() + i);
         }
-        projectiles[i].update(camera, deltaTime);
-        projectiles[i].draw();
     }
 }

@@ -34,6 +34,11 @@ int main() {
 
     // The game
     Game game = Game();
+    
+
+    game.spawnAsteroid(ASTEROID_BIG);
+    game.spawnAsteroid(ASTEROID_MEDIUM);
+    game.spawnAsteroid(ASTEROID_SMALL);
 
     GameObject background = GameObject(
         {

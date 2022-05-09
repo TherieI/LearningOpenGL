@@ -1550,3 +1550,4 @@ int main() {
 [glm]: https://github.com/Groovounet/glm
 [GLM_WEB]: https://glm.g-truc.net/0.9.8/index.html
 [GLM_DOWNLOAD]: https://github.com/g-truc/glm/releases/latest
+[STB_DOWNLOAD]: https://github.com/nothings/stb

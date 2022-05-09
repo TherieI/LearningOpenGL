@@ -83,17 +83,26 @@ void Game::shoot(Projectile_Type ptype) {
 
 void Game::spawnAsteroid(Asteroid_Type asize) {
     float r = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);  // random float between 0 and 1
-    float dir;
+    float angle = r * 360;
 
-    Asteroid a = Asteroid(45.0f, glm::vec3(0.0f, 0.0f, Settings::ENTITY_DEPTH), asize);
+    r = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+    float xPos = (r * 20) - 10.0f;
+
+    r = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+    float yPos = (r * 20) - 10.0f;
+
+    Asteroid a = Asteroid(angle, glm::vec3(xPos, yPos, Settings::ENTITY_DEPTH), asize);
     asteroids.push_back(a);
 }
 
 void Game::updateAsteroids() {
-    std::cout << asteroids.size();
     for (int i = asteroids.size() - 1; i >= 0; i--) {
         asteroids[i].update(camera, deltaTime);
         asteroids[i].draw();
+
+        if (player.collideswith(asteroids[i])) {
+            std::cout << "COLLISION" << std::endl;
+        }
 
         if (!asteroids[i].isAlive()) {
             asteroids.erase(asteroids.begin() + i);

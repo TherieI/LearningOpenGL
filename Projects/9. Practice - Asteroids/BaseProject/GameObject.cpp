@@ -4,6 +4,8 @@ GameObject::GameObject(std::vector<float> vertexData, std::vector<unsigned int> 
     indices = indexData;
     this->position = position;
 
+    vertSize = glm::vec2(abs(vertexData[0]), abs(vertexData[0]));
+
     // Creating Objects to send to GPU
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
@@ -56,6 +58,17 @@ void GameObject::draw() {
     bindAll();
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);  // Draw
     unbindAll();
+}
+
+bool GameObject::collideswith(GameObject &other) {
+    // collision x-axis?
+    bool collisionX = position.x + vertSize.x >= other.position.x &&
+        other.position.x + other.vertSize.x >= position.x;
+    // collision y-axis?
+    bool collisionY = position.y + other.vertSize.y >= other.position.y &&
+        position.y + other.vertSize.y >= position.y;
+    // collision only if on both axes
+    return collisionX && collisionY;
 }
 
 void GameObject::bindAll() {

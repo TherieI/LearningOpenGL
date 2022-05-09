@@ -56,7 +56,7 @@ Asteroid::Asteroid(float t_direction, glm::vec3 t_position, Asteroid_Type t_atyp
 
 
 void Asteroid::update(Camera camera, float deltaTime) {
-    std::cout << position.x << " " << position.y << std::endl;
+    //std::cout << position.x << " " << position.y << std::endl;
     // New position
     inBounds();  // make sure we are in bounds
     position += velocity * deltaTime;

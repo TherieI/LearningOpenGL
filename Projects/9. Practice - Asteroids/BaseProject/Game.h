@@ -16,7 +16,7 @@
 class Game {
 
 public:
-    Camera camera = Camera(glm::vec3(0.0f, 0.0f, 0.0f));
+    Camera camera = Camera(glm::vec3(0.0f, 0.0f, 10.0f));
 
     // player
     Ship player = Ship();

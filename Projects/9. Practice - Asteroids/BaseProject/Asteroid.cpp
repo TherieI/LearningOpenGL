@@ -78,6 +78,10 @@ void Asteroid::update(Camera camera, float deltaTime) {
     glUseProgram(0);
 }
 
+void Asteroid::destroy() {
+    alive = false;
+}
+
 bool Asteroid::isAlive() {
     return alive;
 }

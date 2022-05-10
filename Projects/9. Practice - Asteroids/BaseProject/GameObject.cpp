@@ -61,12 +61,15 @@ void GameObject::draw() {
 }
 
 bool GameObject::collideswith(GameObject &other) {
+
+    float dist = 1.0f;
+
     // collision x-axis?
-    bool collisionX = position.x + vertSize.x >= other.position.x &&
-        other.position.x + other.vertSize.x >= position.x;
+    bool collisionX = position.x + vertSize.x / dist >= other.position.x &&
+        other.position.x + other.vertSize.x / dist >= position.x;
     // collision y-axis?
-    bool collisionY = position.y + other.vertSize.y >= other.position.y &&
-        position.y + other.vertSize.y >= position.y;
+    bool collisionY = position.y + other.vertSize.y / dist >= other.position.y &&
+        position.y + other.vertSize.y / dist >= position.y;
     // collision only if on both axes
     return collisionX && collisionY;
 }

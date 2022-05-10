@@ -7,5 +7,5 @@ namespace Settings
     constexpr unsigned int HEIGHT{ 600 };
 
     constexpr float FOV{ 90.0f };
-    constexpr float ENTITY_DEPTH{ -10.0f };
+    constexpr float ENTITY_DEPTH{ 0.0f };
 }

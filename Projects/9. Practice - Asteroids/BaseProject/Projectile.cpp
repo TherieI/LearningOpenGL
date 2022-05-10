@@ -55,6 +55,10 @@ bool Projectile::isAlive() {
     return alive;
 }
 
+void Projectile::destroy() {
+    lifetime = 0.0f;
+}
+
 void Projectile::updateLifetime(float deltaTime) {
     lifetime -= deltaTime;
     if (lifetime < 0) {

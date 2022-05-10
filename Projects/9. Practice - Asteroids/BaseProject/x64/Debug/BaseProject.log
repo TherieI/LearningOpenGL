@@ -4,5 +4,6 @@ C:\Users\user\Desktop\CPP\OpenGL\Projects\LearningOpenGL\Projects\9. Practice - 
 C:\Users\user\Desktop\CPP\OpenGL\Projects\LearningOpenGL\Projects\9. Practice - Asteroids\BaseProject\Game.cpp(5,15): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
 C:\Users\user\Desktop\CPP\OpenGL\Projects\LearningOpenGL\Projects\9. Practice - Asteroids\BaseProject\Game.cpp(32,24): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
 C:\Users\user\Desktop\CPP\OpenGL\Projects\LearningOpenGL\Projects\9. Practice - Asteroids\BaseProject\Game.cpp(59,5): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\user\Desktop\CPP\OpenGL\Projects\LearningOpenGL\Projects\9. Practice - Asteroids\BaseProject\Game.cpp(99,5): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\user\Desktop\CPP\OpenGL\Projects\LearningOpenGL\Projects\9. Practice - Asteroids\BaseProject\Game.cpp(64,9): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\user\Desktop\CPP\OpenGL\Projects\LearningOpenGL\Projects\9. Practice - Asteroids\BaseProject\Game.cpp(108,5): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
   BaseProject.vcxproj -> C:\Users\user\Desktop\CPP\OpenGL\Projects\LearningOpenGL\Projects\9. Practice - Asteroids\x64\Debug\BaseProject.exe

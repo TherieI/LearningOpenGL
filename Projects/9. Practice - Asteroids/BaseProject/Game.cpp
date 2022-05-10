@@ -60,6 +60,15 @@ void Game::updateProjectiles() {
         projectiles[i].update(camera, deltaTime);
         projectiles[i].draw();
 
+        // Check collisions with asteroids
+        for (int j = asteroids.size() - 1; j >= 0; j--) {
+            if (projectiles[i].collideswith(asteroids[j])) {
+                asteroids[j].destroy();
+                projectiles[i].destroy();
+                break;
+            }
+        }
+
         if (!projectiles[i].isAlive()) {
             projectiles.erase(projectiles.begin() + i);
         }
@@ -99,10 +108,6 @@ void Game::updateAsteroids() {
     for (int i = asteroids.size() - 1; i >= 0; i--) {
         asteroids[i].update(camera, deltaTime);
         asteroids[i].draw();
-
-        if (player.collideswith(asteroids[i])) {
-            std::cout << "COLLISION" << std::endl;
-        }
 
         if (!asteroids[i].isAlive()) {
             asteroids.erase(asteroids.begin() + i);

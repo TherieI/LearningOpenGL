@@ -34,14 +34,18 @@ private:
     float deltaTime = 0.0f;	// Time between current frame and last frame
     float lastFrame = 0.0f; // Time of last frame
 
+    int level = 0;
+
     int score;
 
 public:
     Game();
-    void run(GLFWwindow* window);
+    void reload();
     void handleInput(GLFWwindow* window);
     void update(GLFWwindow* window);
     void spawnAsteroid(Asteroid_Type asize);
+    void spawnAsteroid(Asteroid_Type asize, glm::vec3 pos);
+    void checkState();
     float getDeltaTime();
 
 private:

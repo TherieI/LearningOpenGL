@@ -47,11 +47,12 @@ Asteroid::Asteroid(float t_direction, glm::vec3 t_position, Asteroid_Type t_atyp
         t_position  // Position
         )
 {
+    aType = t_atype;
     direction = t_direction;
 
     // calculate velocity based on direction
     float angle = glm::radians(direction);
-    velocity = glm::vec3(cosf(angle), sinf(angle), 0.0f) * 5.0f;
+    velocity = glm::vec3(cosf(angle), sinf(angle), 0.0f) * 3.0f;
 }
 
 

@@ -19,7 +19,7 @@ Ship::Ship() :
 {
     // Init Positions
     velocity = glm::vec3(0.0f);
-    acceleration = glm::vec3(5.0f);
+    acceleration = glm::vec3(7.0f);
     direction = 90.0f;
 }
 
@@ -67,6 +67,20 @@ void Ship::update(Camera camera, float deltaTime) {
     shader.setMat4("view", view);
     shader.setMat4("projection", projection);
     glUseProgram(0);
+}
+
+void Ship::kill() {
+    alive = false;
+}
+
+bool Ship::isAlive() {
+    return alive;
+}
+
+void Ship::revive() {
+    alive = true;
+    position = glm::vec3(0.0f, 0.0f, Settings::ENTITY_DEPTH);
+    velocity = glm::vec3(0.0f, 0.0f, 0.0f);
 }
 
 

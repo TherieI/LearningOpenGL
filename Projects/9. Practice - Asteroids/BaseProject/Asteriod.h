@@ -17,6 +17,7 @@ public:
     // Positioning
     glm::vec3 velocity;
     float direction;
+    Asteroid_Type aType;
 
 private:
     bool alive = true;

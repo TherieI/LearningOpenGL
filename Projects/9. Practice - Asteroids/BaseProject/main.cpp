@@ -34,11 +34,8 @@ int main() {
 
     // The game
     Game game = Game();
-    
 
-    game.spawnAsteroid(ASTEROID_BIG);
-    game.spawnAsteroid(ASTEROID_MEDIUM);
-    game.spawnAsteroid(ASTEROID_SMALL);
+    game.reload();
 
     GameObject background = GameObject(
         {
@@ -57,9 +54,12 @@ int main() {
         glm::vec3(0.0f, 0.2f, game.camera.Position.z - 1.0f)
     );
 
-
+    // gaming mode
+    //glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    
     // RENDER LOOP
     while (!glfwWindowShouldClose(window)) {
+
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 

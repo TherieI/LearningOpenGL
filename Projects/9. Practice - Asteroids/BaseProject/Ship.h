@@ -24,9 +24,16 @@ public:
     glm::vec3 velocity, acceleration;
     float direction;
 
+private:
+    bool alive = true;
+
+public:
     Ship();
     void move(Movement dir, float deltaTime);
     void update(Camera camera, float deltaTime);
+    void kill();
+    bool isAlive();
+    void revive();
 
 private:
     void slow(float deltaTime);

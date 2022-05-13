@@ -1,4 +1,0 @@
-﻿  Ship.cpp
-C:\Users\user\Desktop\CPP\OpenGL\Projects\LearningOpenGL\Projects\9. Practice - Asteroids\dependencies\includes\camera\camera.h(89,1): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-C:\Users\user\Desktop\CPP\OpenGL\Projects\LearningOpenGL\Projects\9. Practice - Asteroids\dependencies\includes\camera\camera.h(90,1): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-  BaseProject.vcxproj -> C:\Users\user\Desktop\CPP\OpenGL\Projects\LearningOpenGL\Projects\9. Practice - Asteroids\x64\Debug\BaseProject.exe

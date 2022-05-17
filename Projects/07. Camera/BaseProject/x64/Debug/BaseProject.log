@@ -1,5 +1,1 @@
-﻿  main.cpp
-C:\Users\user\Desktop\CPP\OpenGL\Projects\LearningOpenGL\Projects\7. Camera\dependencies\includes\camera\camera.h(89,1): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-C:\Users\user\Desktop\CPP\OpenGL\Projects\LearningOpenGL\Projects\7. Camera\dependencies\includes\camera\camera.h(90,1): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-C:\Users\user\Desktop\CPP\OpenGL\Projects\LearningOpenGL\Projects\7. Camera\BaseProject\main.cpp(190,28): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-  BaseProject.vcxproj -> C:\Users\user\Desktop\CPP\OpenGL\Projects\LearningOpenGL\Projects\7. Camera\x64\Debug\BaseProject.exe
+﻿  BaseProject.vcxproj -> C:\Users\user\Desktop\CPP\OpenGL\Projects\LearningOpenGL\Projects\07. Camera\x64\Debug\BaseProject.exe

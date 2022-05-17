@@ -19,8 +19,8 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void handleInput(GLFWwindow* window);
 
 
-const unsigned int WIDTH  = 800;
-const unsigned int HEIGHT = 600;
+unsigned int WIDTH  = 800;
+unsigned int HEIGHT = 600;
 
 
 int main() {
@@ -101,6 +101,9 @@ int main() {
         // Activate shader
         triangleProgram.use();
 
+        // Send resolution data to GPU
+        triangleProgram.setVec2("u_resolution", glm::vec2((float) WIDTH, (float) HEIGHT));
+
         // Bind the VAO
         glBindVertexArray(VAO);
 
@@ -120,6 +123,8 @@ int main() {
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
+    WIDTH = width;
+    HEIGHT = height;
 }
 
 void handleInput(GLFWwindow* window) {

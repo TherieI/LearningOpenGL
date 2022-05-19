@@ -21,9 +21,6 @@ This repository contains projects that I did to learn OpenGL. In order to learn,
    * [Experimenting with Shaders][10]
 
 
-
-## References
-
 [1]: https://github.com/TherieI/LearningOpenGL/tree/main/Projects/01.%20Base%20OpenGL%20Project
 [2]: https://github.com/TherieI/LearningOpenGL/tree/main/Projects/02.%20Two%20Triangles%20Challenge
 [3]: https://github.com/TherieI/LearningOpenGL/tree/main/Projects/03.%20Rainbow%20Square%20with%20EBOs

@@ -2,7 +2,7 @@
 
 *By Gabriel Rosas*
 
-This repository contains projects that I did to learn OpenGL. In order to learn, I created guides (more for my benefit than anything else), though they might be of use to others beginning the same journey. I also recorded some of the problems that I had, along with their respective solutions that I troubleshooted.
+This repository contains projects that I did to learn OpenGL. In order to learn, I created guides (more for my benefit than anything else), though they might be of use to others beginning the same journey. The guides are in their respective projects. I also recorded some of the problems that I had, along with their respective solutions that I troubleshooted.
 
 
 

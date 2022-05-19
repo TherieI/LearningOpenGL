@@ -2,7 +2,7 @@
 
 
 
-After creating the window, we now move on to creating our first triangle.
+In this project, I mainly focused on user input and drawing a triangle.
 
 
 

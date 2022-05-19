@@ -33,4 +33,4 @@ This repository contains projects that I did to learn OpenGL. In order to learn,
 [7]: https://github.com/TherieI/LearningOpenGL/tree/main/Projects/07.%20Camera
 [8]: https://github.com/TherieI/LearningOpenGL/tree/main/Projects/08.%20Practice%20-%20Sorting%20Algoritm%20Visualizer
 [9]: https://github.com/TherieI/LearningOpenGL/tree/main/Projects/09.%20Practice%20-%20Asteroids
-[10]: https://github.com/TherieI/LearningOpenGL/tree/main/Projects/10.%20Practice%20-%20Fire%20Shader
+[10]: https://github.com/TherieI/LearningOpenGL/tree/main/Projects/10.%20Practice%20-%20Complex%20Shaders

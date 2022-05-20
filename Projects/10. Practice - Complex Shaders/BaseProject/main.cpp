@@ -48,15 +48,15 @@ int main() {
 
 
     // COMPILE AND CREATE SHADERS
-    Shader shaderProgram = Shader("shaders/standard.vs", "shaders/noise.fs");
+    Shader shaderProgram = Shader("shaders/fire.vs", "shaders/fire.fs");
 
     // VERTEX DATA
     float vertices[] = {
-         // positions       
-        -1.0f,  1.0f, 0.0f, // top left
-         1.0f,  1.0f, 0.0f, // top right
-         1.0f, -1.0f, 0.0f, // bottom right
-        -1.0f, -1.0f, 0.0f, // bottom left
+         // positions       // Colors
+        -1.0f,  1.0f, 0.0f,  0.0f,   // top left
+         1.0f,  1.0f, 0.0f,  0.0f,   // top right
+         1.0f, -1.0f, 0.0f,  1.0f,   // bottom right
+        -1.0f, -1.0f, 0.0f,  1.0f,   // bottom left
     };
     unsigned int indices[]{
         0, 1, 2,  // 1st triangle
@@ -81,8 +81,12 @@ int main() {
 
     // Specifies the location and data format of the bound VBO to use when rendering
     // Positions
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*) 0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*) 0);
     glEnableVertexAttribArray(0);
+
+    // Color
+    glVertexAttribPointer(1, 1, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*) (3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
     
     // Unbinding
     glBindBuffer(GL_ARRAY_BUFFER, 0);

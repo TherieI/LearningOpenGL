@@ -49,16 +49,14 @@ float fbm (in vec2 st) {
 void main() {
     vec2 st = gl_FragCoord.xy/u_resolution.xy;
     st.x *= u_resolution.x/u_resolution.y;
-    st.x += u_time*0.25;
+    st.y -= u_time*0.25;
 
-    float pixel_multiplier = 10.0f;
+    float pixel_multiplier = 1.0f;
     st *= pixel_multiplier;
 
-    vec3 wave = vec3(sin(u_time), sin(1.0f-u_time), cos(u_time*3));
+    vec3 red = vec3(0.9f, 0.2f, 0.1f);
 
-    vec3 color = vec3(0.0);
-    color += fbm(st*3.0);
-    // color *= wave;
+    color += distortion(st*3.0);
 
     FragColor = vec4(color,1.0);
 }

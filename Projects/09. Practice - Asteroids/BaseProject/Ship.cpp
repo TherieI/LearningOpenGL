@@ -70,7 +70,8 @@ void Ship::update(Camera camera, float deltaTime) {
 }
 
 void Ship::kill() {
-    alive = false;
+    if (!god)
+        alive = false;
 }
 
 bool Ship::isAlive() {

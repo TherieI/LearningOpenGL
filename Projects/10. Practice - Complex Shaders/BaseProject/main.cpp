@@ -48,7 +48,7 @@ int main() {
 
 
     // COMPILE AND CREATE SHADERS
-    Shader triangleProgram = Shader("shaders/agent.vs", "shaders/agent.fs");
+    Shader shaderProgram = Shader("shaders/standard.vs", "shaders/noise.fs");
 
     // VERTEX DATA
     float vertices[] = {
@@ -99,10 +99,22 @@ int main() {
         glClear(GL_COLOR_BUFFER_BIT);
 
         // Activate shader
-        triangleProgram.use();
+        shaderProgram.use();
+
+        // Transforms
+        glm::mat4 model = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
+        glm::mat4 view = glm::mat4(1.0f);
+        glm::mat4 projection = glm::mat4(1.0f);
+
+        model = glm::rotate(model, /* Note that -55, this angle, is in degrees. */ -55.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+        view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+        projection = glm::perspective( /* Angle in degrees */ 45.0f, (float)WIDTH / (float)HEIGHT, 0.1f, 100.0f);
+
+        shaderProgram.setMat4("u_mvp", projection * view * model);
 
         // Send resolution data to GPU
-        triangleProgram.setVec2("u_resolution", glm::vec2((float) WIDTH, (float) HEIGHT));
+        shaderProgram.setVec2("u_resolution", glm::vec2((float) WIDTH, (float) HEIGHT));
+        shaderProgram.setFloat("u_time", (float)glfwGetTime());
 
         // Bind the VAO
         glBindVertexArray(VAO);

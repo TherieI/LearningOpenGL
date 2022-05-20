@@ -23,6 +23,7 @@ public:
     // Positioning
     glm::vec3 velocity, acceleration;
     float direction;
+    bool god = false;
 
 private:
     bool alive = true;

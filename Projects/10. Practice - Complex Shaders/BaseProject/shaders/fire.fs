@@ -55,7 +55,7 @@ float distortion( in vec2 p )
     vec2 r = vec2( fbm( p + 4.0*q + vec2(1.7,9.2) ),
                    fbm( p + 4.0*q + vec2(8.3,2.8) ) );
 
-    return fbm( p + 4.0*r );
+    return fbm( p + 4.0*r ) * 18.0f + sin(u_time*0.3) * 3.0f;
 }
 
 void main() {

@@ -48,7 +48,7 @@ int main() {
 
 
     // COMPILE AND CREATE SHADERS
-    Shader shaderProgram = Shader("shaders/standard.vs", "shaders/domaindistortion.fs");
+    Shader shaderProgram = Shader("shaders/fire.vs", "shaders/fire.fs");
 
     // VERTEX DATA
     float vertices[] = {

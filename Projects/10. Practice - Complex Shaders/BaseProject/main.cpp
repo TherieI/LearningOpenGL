@@ -48,7 +48,7 @@ int main() {
 
 
     // COMPILE AND CREATE SHADERS
-    Shader shaderProgram = Shader("shaders/fire.vs", "shaders/fire.fs");
+    Shader shaderProgram = Shader("shaders/mousefire.vs", "shaders/mousefire.fs");
 
     // VERTEX DATA
     float vertices[] = {
@@ -118,6 +118,12 @@ int main() {
 
         // Send resolution data to GPU
         shaderProgram.setVec2("u_resolution", glm::vec2((float) WIDTH, (float) HEIGHT));
+
+        double mouse_x, mouse_y;
+        glfwGetCursorPos(window, &mouse_x, &mouse_y);
+        // std::cout << mouse_x << " " << mouse_y << std::endl;
+
+        shaderProgram.setVec2("u_mouse", glm::vec2((float) mouse_x, (float) mouse_y));
         shaderProgram.setFloat("u_time", (float)glfwGetTime());
 
         // Bind the VAO

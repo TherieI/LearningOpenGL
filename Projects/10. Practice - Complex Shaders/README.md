@@ -1,6 +1,6 @@
 # Complex Shaders
 
-In this project, I attempt to learn from various open source shaders online, and hopefully construct my own. Many of these shaders can be found on [the book of shaders][BOOK_OF_SHADERS]. These shaders are ones I've found particularly interesting and have decided to showcase.
+In this project, I attempt to learn from various open source shaders online, and hopefully construct my own. Many of these shaders can be found on [the book of shaders][BOOK_OF_SHADERS]. These shaders are ones I've found particularly interesting and have decided to showcase:
 
 
 

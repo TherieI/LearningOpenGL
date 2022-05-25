@@ -50,6 +50,7 @@ float fbm (in vec2 st) {
 
 void main() {
     vec2 st = gl_FragCoord.xy/u_resolution;
+    
     float pct = 0.0;
 
     vec2 mouse_pos = vec2(u_mouse.x/u_resolution.x, -u_mouse.y/u_resolution.y + 1.0f);  // getting the relative mouse position
@@ -57,7 +58,7 @@ void main() {
     // a. The DISTANCE from the pixel to the center
     pct = distance(st, mouse_pos)*10.0f;
 
-    vec3 color = vec3(pct) * fbm(st);
+    vec3 color = vec3(pct) + fbm(st * 3.0f);
     color = vec3(1.0f) - color; // inverse color
     color *= vec3(0.8f, 0.3f, 0.1f);
 

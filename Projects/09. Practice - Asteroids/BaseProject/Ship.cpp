@@ -46,7 +46,7 @@ void Ship::move(Movement dir, float deltaTime) {
     }
 }
 
-void Ship::update(Camera camera, float deltaTime) {
+void Ship::update(Camera *camera, float deltaTime) {
     // New position
     position += velocity * deltaTime;
     slow(deltaTime);
@@ -56,7 +56,7 @@ void Ship::update(Camera camera, float deltaTime) {
     glm::mat4 model = glm::mat4(1.0f);
     model = glm::rotate(model, direction - 90, glm::vec3(0.0f, 0.0f, 1.0f));
 
-    glm::mat4 view = camera.GetViewMatrix();
+    glm::mat4 view = camera->GetViewMatrix();
     view = glm::translate(view, position);
 
     glm::mat4 projection = glm::perspective(Settings::FOV, (float) Settings::WIDTH / Settings::HEIGHT, 0.1f, 100.0f);

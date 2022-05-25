@@ -39,10 +39,10 @@ GameObject::GameObject(std::vector<float> vertexData, std::vector<unsigned int> 
     this->texture = texture;
 }
 
-void GameObject::update(Camera camera, float deltaTime) {
+void GameObject::update(Camera *camera, float deltaTime) {
     // Matrices
     glm::mat4 model = glm::mat4(1.0f);
-    glm::mat4 view = camera.GetViewMatrix();
+    glm::mat4 view = camera->GetViewMatrix();
     view = glm::translate(view, position);
     glm::mat4 projection = glm::perspective(Settings::FOV, (float)Settings::WIDTH / Settings::HEIGHT, 0.1f, 100.0f);  // projection remains the same for all cubes
 

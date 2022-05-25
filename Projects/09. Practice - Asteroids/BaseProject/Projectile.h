@@ -25,7 +25,7 @@ private:
 
 public: 
     Projectile(float direction, glm::vec3 t_velocity, Projectile_Type ptype);
-    void update(Camera camera, float deltaTime);
+    void update(Camera *camera, float deltaTime);
     bool isAlive();
     void destroy();
 

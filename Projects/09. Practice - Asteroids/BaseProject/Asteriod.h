@@ -24,7 +24,7 @@ private:
 
 public:
     Asteroid(float t_direction, glm::vec3 t_position, Asteroid_Type t_atype);
-    void update(Camera camera, float deltaTime);
+    void update(Camera *camera, float deltaTime);
     bool isAlive();
     void destroy();
 

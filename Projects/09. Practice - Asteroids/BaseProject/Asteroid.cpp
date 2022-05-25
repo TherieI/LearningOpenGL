@@ -56,7 +56,7 @@ Asteroid::Asteroid(float t_direction, glm::vec3 t_position, Asteroid_Type t_atyp
 }
 
 
-void Asteroid::update(Camera camera, float deltaTime) {
+void Asteroid::update(Camera *camera, float deltaTime) {
     //std::cout << position.x << " " << position.y << std::endl;
     // New position
     inBounds();  // make sure we are in bounds
@@ -64,7 +64,7 @@ void Asteroid::update(Camera camera, float deltaTime) {
 
     // Matrices
     glm::mat4 model = glm::mat4(1.0f);
-    glm::mat4 view = camera.GetViewMatrix();
+    glm::mat4 view = camera->GetViewMatrix();
     glm::mat4 projection = glm::perspective(Settings::FOV, (float)Settings::WIDTH / Settings::HEIGHT, 0.1f, 100.0f);
 
     // Transformations

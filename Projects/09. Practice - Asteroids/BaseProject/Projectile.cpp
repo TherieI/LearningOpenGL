@@ -26,14 +26,14 @@ Projectile::Projectile(float t_direction, glm::vec3 t_position, Projectile_Type 
 }
 
 
-void Projectile::update(Camera camera, float deltaTime) {
+void Projectile::update(Camera *camera, float deltaTime) {
     // New position
     inBounds();  // make sure we are in bounds
     position += velocity * deltaTime;
 
     // Matrices
     glm::mat4 model = glm::mat4(1.0f);
-    glm::mat4 view = camera.GetViewMatrix();
+    glm::mat4 view = camera->GetViewMatrix();
     glm::mat4 projection = glm::perspective(Settings::FOV, (float)Settings::WIDTH / Settings::HEIGHT, 0.1f, 100.0f);
 
     // Transformations

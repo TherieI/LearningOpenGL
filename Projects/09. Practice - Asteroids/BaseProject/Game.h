@@ -16,15 +16,9 @@
 class Game {
 
 public:
-    Camera camera = Camera(glm::vec3(0.0f, 0.0f, 10.0f));
-
-    // player
+    Camera* camera;
     Ship player = Ship();
-
-    // Asteroids
     std::vector<Asteroid> asteroids{};
-
-    // Handling projectiles
     std::vector<Projectile> projectiles{};
     float cooldown = 0.0f;
 
@@ -33,13 +27,11 @@ private:
     // delta time
     float deltaTime = 0.0f;	// Time between current frame and last frame
     float lastFrame = 0.0f; // Time of last frame
-
     int level = 0;
-
     int score;
 
 public:
-    Game();
+    Game(Camera *camera);
     void reload();
     void handleInput(GLFWwindow* window);
     void update(GLFWwindow* window);

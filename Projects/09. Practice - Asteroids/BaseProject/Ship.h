@@ -31,7 +31,7 @@ private:
 public:
     Ship();
     void move(Movement dir, float deltaTime);
-    void update(Camera camera, float deltaTime);
+    void update(Camera *camera, float deltaTime);
     void kill();
     bool isAlive();
     void revive();

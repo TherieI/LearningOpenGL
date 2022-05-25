@@ -1,13 +1,5 @@
 #include "main.h"
 
-#include "Game.h"
-#include "Ship.h"
-
-
-// Handles Window size changes
-void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-
-
 int main() {
     // GLFW WINDOW HINTS
     glfwInit();
@@ -16,7 +8,7 @@ int main() {
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     // GLFW WINDOW CREATION
-    GLFWwindow* window = glfwCreateWindow(Settings::WIDTH, Settings::HEIGHT, "The Real", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(Settings::WIDTH, Settings::HEIGHT, "Asteroids", NULL, NULL);
     if (window == NULL) {
         std::cout << "Failed to create GLFW window\n";
         glfwTerminate();
@@ -32,9 +24,16 @@ int main() {
 
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
-    // The game
-    Game game = Game();
+    // -----------------------------------------------------------------------------
+    
+    GameState state = MENU;
+    
+    Camera camera = Camera(glm::vec3(0.0f, 0.0f, 10.0f));
 
+    Menu menu = Menu(&camera);
+
+
+    Game game = Game(&camera);
     game.reload();
 
     GameObject background = GameObject(
@@ -51,22 +50,31 @@ int main() {
         },
         Shader("shaders/background.vs", "shaders/background.fs"),
         Image("assets/background.png", GL_RGBA),
-        glm::vec3(0.0f, 0.2f, game.camera.Position.z - 1.0f)
+        glm::vec3(0.0f, 0.2f, camera.Position.z - 1.0f)
     );
+    background.update(&camera, game.getDeltaTime());  // background is static so only needs to be updated once
 
-    // gaming mode
-    //glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-    
     // RENDER LOOP
     while (!glfwWindowShouldClose(window)) {
-
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        background.update(game.camera, game.getDeltaTime());
         background.draw();
 
-        game.update(window);
+        switch (state) {
+        case MENU:
+            menu.update(window);
+            if (menu.game_started()) {
+                state = GAME;
+            }
+            break;
+        case GAME:
+            game.update(window);
+            break;
+        }
+
+        glfwSwapBuffers(window);
+        glfwPollEvents();
     }
 
     glfwTerminate();

@@ -1,8 +1,9 @@
 #include "Game.h"
 
-Game::Game() {
+Game::Game(Camera *camera) {
+    this->camera = camera;
     score = 0;
-    srand(time(NULL));
+    srand(time(NULL));  // TODO: implement std::random instead of srand
 }
 
 void Game::reload() {
@@ -53,9 +54,6 @@ void Game::update(GLFWwindow* window) {
 
     // Key Input
     handleInput(window);
-
-    glfwSwapBuffers(window);
-    glfwPollEvents();
 }
 
 float Game::getDeltaTime() {

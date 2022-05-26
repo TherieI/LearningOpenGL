@@ -2,12 +2,16 @@
 
 Menu::Menu(Camera* camera) {
 	this->camera = camera;
+
 }
 
-void Menu::update(GLFWwindow* window) {
+void Menu::update(GLFWwindow* window, float deltaTime) {
 	if (start_clicked()) {
 		started = true;
 	}
+
+	title.update(camera, deltaTime);
+    title.draw();
 }
 
 bool Menu::game_started() {
@@ -15,5 +19,5 @@ bool Menu::game_started() {
 }
 
 bool Menu::start_clicked() {
-	return true;
+	return false;
 }

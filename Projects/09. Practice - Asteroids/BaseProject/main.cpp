@@ -32,7 +32,6 @@ int main() {
 
     Menu menu = Menu(&camera);
 
-
     Game game = Game(&camera);
     game.reload();
 
@@ -63,7 +62,7 @@ int main() {
 
         switch (state) {
         case MENU:
-            menu.update(window);
+            menu.update(window, 0);
             if (menu.game_started()) {
                 state = GAME;
             }

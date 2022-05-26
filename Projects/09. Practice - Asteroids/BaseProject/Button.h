@@ -1,5 +1,6 @@
 #pragma once
 #include <glad/glad.h>
+#include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <vector>
 
@@ -11,8 +12,12 @@
 #include "Image.h"
 
 class Button : public GameObject {
+private:
+    bool pressed = false;
 public:
-    Button(glm::vec3 position, Shader shader, Image image);
-    void update(Camera* camera, float deltaTime);
+    Button(std::vector<float> vertexData, std::vector<unsigned int> indexData, Shader shader, Image texture, glm::vec3 position);
+    void update(GLFWwindow* window, Camera* camera, glm::mat4 model, glm::mat4 view, glm::mat4 projection);
     bool is_pressed();
+private:
+    void update_pressed(GLFWwindow* window);
 };

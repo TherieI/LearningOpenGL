@@ -15,9 +15,20 @@ private:
 public:
 	Camera* camera;
 	Button start_button = Button(
-		glm::vec3(0.0f, 0.0f, Settings::ENTITY_DEPTH),
+		{
+			// Positions          // Texture
+			-1.0f, -0.33f,  0.0f,  0.0f, 0.0f, // BL
+			 1.0f, -0.33f,  0.0f,  1.0f, 0.0f, // BR
+			 1.0f,  0.33f,  0.0f,  1.0f, 1.0f, // TR
+			-1.0f,  0.33f,  0.0f,  0.0f, 1.0f, // TL
+		},
+		{
+			0,  1,  2,  // 1st triangle
+			0,  2,  3,  // 2nd triangle
+		},
 		Shader("shaders/button.vs", "shaders/button.fs"),
-		Image("title.png", GL_RGBA)
+		Image("assets/title.png", GL_RGBA),
+		glm::vec3(0.0f, 1.0f, 2.0f)
 	);
 
 	Menu(Camera* camera);

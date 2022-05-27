@@ -14,7 +14,7 @@ private:
 
 public:
 	Camera* camera;
-	Button start_button = Button(
+	GameObject asteroid_text = GameObject(
 		{
 			// Positions          // Texture
 			-1.0f, -0.33f,  0.0f,  0.0f, 0.0f, // BL
@@ -28,7 +28,7 @@ public:
 		},
 		Shader("shaders/button.vs", "shaders/button.fs"),
 		Image("assets/title.png", GL_RGBA),
-		glm::vec3(0.0f, 1.0f, 2.0f)
+		glm::vec3(0.0f, 0.8f, 7.0f)
 	);
 
 	Menu(Camera* camera);

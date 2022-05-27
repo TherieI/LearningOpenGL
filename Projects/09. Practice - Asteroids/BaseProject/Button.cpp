@@ -10,14 +10,10 @@ Button::Button(std::vector<float> vertexData, std::vector<unsigned int> indexDat
     
 }
 
-void Button::update(GLFWwindow* window, Camera* camera, glm::mat4 model, glm::mat4 view, glm::mat4 projection) {
+void Button::update(GLFWwindow* window, glm::mat4 model, glm::mat4 view, glm::mat4 projection) {
     update_pressed(window);
 
-    std::cout << position.z << std::endl;
-    
-
     view = glm::translate(view, position);
-
     
     shader.use();
     shader.setMat4("model", model);

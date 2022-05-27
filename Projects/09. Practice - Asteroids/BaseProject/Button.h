@@ -16,7 +16,7 @@ private:
     bool pressed = false;
 public:
     Button(std::vector<float> vertexData, std::vector<unsigned int> indexData, Shader shader, Image texture, glm::vec3 position);
-    void update(GLFWwindow* window, Camera* camera, glm::mat4 model, glm::mat4 view, glm::mat4 projection);
+    void update(GLFWwindow* window, glm::mat4 model, glm::mat4 view, glm::mat4 projection);
     bool is_pressed();
 private:
     void update_pressed(GLFWwindow* window);

@@ -51,7 +51,7 @@ int main() {
         Image("assets/background.png", GL_RGBA),
         glm::vec3(0.0f, 0.2f, camera.Position.z - 1.0f)
     );
-    background.update(&camera, game.getDeltaTime());  // background is static so only needs to be updated once
+    background.update(&camera);  // background is static so only needs to be updated once
 
     // RENDER LOOP
     while (!glfwWindowShouldClose(window)) {

@@ -11,6 +11,7 @@ Button::Button(std::vector<float> vertexData, std::vector<unsigned int> indexDat
 }
 
 void Button::update(GLFWwindow* window, glm::mat4 model, glm::mat4 view, glm::mat4 projection) {
+    update_mouse_hover(window);
     update_pressed(window);
 
     view = glm::translate(view, position);
@@ -23,18 +24,30 @@ void Button::update(GLFWwindow* window, glm::mat4 model, glm::mat4 view, glm::ma
 }
 
 bool Button::is_pressed() {
-    return pressed;
+    return pressed && mouse_hovering;
 }
 
-void Button::update_pressed(GLFWwindow* window) {
+void Button::update_mouse_hover(GLFWwindow* window) {
     double xposd, yposd; glfwGetCursorPos(window, &xposd, &yposd);
     float xpos = static_cast<float> (xposd) / Settings::WIDTH; float ypos = static_cast<float> (yposd) / Settings::HEIGHT;
 
-    // std::cout << position.x << " < " << xpos << " < " << position.x + vertSize.x << " " << ypos << std::endl;
+    float dx, dy;
+    dx = 0.5f + position.x / position.z;
+    dy = 0.5f - position.y / position.z;
 
-    if (position.x + vertSize.x > xpos && position.x - vertSize.x < xpos
-        && position.y + vertSize.y > ypos && position.y - vertSize.y < ypos) {
+    if ((position.x + vertSize.x) / position.z + dx > xpos && (position.x - vertSize.x) / position.z + dx < xpos
+        && (position.y + vertSize.y) / position.z + dy > ypos && (position.y - vertSize.y) / position.z + dy < ypos) {
+        mouse_hovering = true;
+        //std::cout << "!";
+        return;
+    }
+    mouse_hovering = false;
+}
+
+void Button::update_pressed(GLFWwindow* window) {
+    if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
         pressed = true;
+        //std::cout << "#";
         return;
     }
     pressed = false;

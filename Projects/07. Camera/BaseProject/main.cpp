@@ -126,7 +126,7 @@ int main() {
     };
 
     // Creating Objects to send to GPU
-    unsigned int VBO, VAO, EBO;
+    unsigned int VBO, VAO, EBO; 
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
     glGenBuffers(1, &EBO);

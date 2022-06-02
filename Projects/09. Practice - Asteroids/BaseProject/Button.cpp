@@ -28,8 +28,16 @@ bool Button::is_pressed() {
 }
 
 void Button::update_mouse_hover(GLFWwindow* window) {
-    double xposd, yposd; glfwGetCursorPos(window, &xposd, &yposd);
-    float xpos = static_cast<float> (xposd) / Settings::WIDTH; float ypos = static_cast<float> (yposd) / Settings::HEIGHT;
+    int width, height;
+    glfwGetWindowSize(window, &width, &height);
+
+    double xposd, yposd; 
+    glfwGetCursorPos(window, &xposd, &yposd);
+    float xpos = static_cast<float> (xposd) / width; float ypos = static_cast<float> (yposd) / height;
+
+    /*std::cout << xpos << " " << ypos << std::endl;
+    std::cout << position.x << " " << position.y << std::endl;*/
+    
 
     float dx, dy;
     dx = 0.5f + position.x / position.z;
@@ -38,7 +46,7 @@ void Button::update_mouse_hover(GLFWwindow* window) {
     if ((position.x + vertSize.x) / position.z + dx > xpos && (position.x - vertSize.x) / position.z + dx < xpos
         && (position.y + vertSize.y) / position.z + dy > ypos && (position.y - vertSize.y) / position.z + dy < ypos) {
         mouse_hovering = true;
-        //std::cout << "!";
+        std::cout << "!";
         return;
     }
     mouse_hovering = false;
@@ -47,7 +55,7 @@ void Button::update_mouse_hover(GLFWwindow* window) {
 void Button::update_pressed(GLFWwindow* window) {
     if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
         pressed = true;
-        //std::cout << "#";
+        std::cout << "#";
         return;
     }
     pressed = false;

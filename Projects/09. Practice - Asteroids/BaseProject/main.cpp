@@ -82,4 +82,7 @@ int main() {
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
+
+    /*Settings::WIDTH = width;
+    Settings::HEIGHT = height;*/
 }

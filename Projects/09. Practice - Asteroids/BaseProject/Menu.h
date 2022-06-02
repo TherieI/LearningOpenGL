@@ -44,8 +44,8 @@ public:
 			0,  2,  3,  // 2nd triangle
 		},
 		Shader("shaders/button.vs", "shaders/button.fs"),
-		Image("assets/play.png", GL_RGBA),
-		glm::vec3(0.0f, -0.2f, 5.0f)
+		Image("assets/play-purple.png", GL_RGBA),
+		glm::vec3(0.5f, -2.5f, 5.0f)
 	);
 
 	Menu(Camera* camera);

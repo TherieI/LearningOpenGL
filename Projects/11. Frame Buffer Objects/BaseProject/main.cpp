@@ -81,7 +81,7 @@ int main() {
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
     // ----------------------- FRAME BUFFER -------------------------
-    glBindBuffer(GL_FRAMEBUFFER, FBO);
+    glBindFramebuffer(GL_FRAMEBUFFER, FBO);
     unsigned int FBO_Texture;
     glGenTextures(1, &FBO_Texture);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, WIDTH, HEIGHT, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
@@ -133,7 +133,9 @@ int main() {
 
         // Bind buffers
         glBindVertexArray(VAO);
-        glBindBuffer(GL_FRAMEBUFFER, FBO);
+
+        // glBindFramebuffer(GL_FRAMEBUFFER, FBO);
+        // glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
         // Transforms
         glm::mat4 model = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first

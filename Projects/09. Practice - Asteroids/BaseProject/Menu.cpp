@@ -19,8 +19,13 @@ void Menu::update(GLFWwindow* window, float deltaTime) {
 	play_button.draw();
 
 	if (play_button.is_pressed()) {
+<<<<<<< HEAD
 		// std::cout << "gaming";
 		// started = true;
+=======
+		std::cout << "gaming";
+		started = true;
+>>>>>>> f49421a0b867736d7e1c22226154573fd950620b
 	}
 	// -------------- Start button ----------------------
 

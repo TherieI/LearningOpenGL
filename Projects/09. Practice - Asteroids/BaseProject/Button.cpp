@@ -30,6 +30,17 @@ bool Button::is_pressed() {
 void Button::update_mouse_hover(GLFWwindow* window) {
     int width, height;
     glfwGetWindowSize(window, &width, &height);
+<<<<<<< HEAD
+=======
+
+    double xposd, yposd; 
+    glfwGetCursorPos(window, &xposd, &yposd);
+    float xpos = static_cast<float> (xposd) / width; float ypos = static_cast<float> (yposd) / height;
+
+    /*std::cout << xpos << " " << ypos << std::endl;
+    std::cout << position.x << " " << position.y << std::endl;*/
+    
+>>>>>>> f49421a0b867736d7e1c22226154573fd950620b
 
     double xposd, yposd; 
     glfwGetCursorPos(window, &xposd, &yposd);

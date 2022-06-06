@@ -38,7 +38,7 @@ Objects in OpenGL are written in C but allow many derivations for other language
 
 ### Creating a Window
 
-Before creating graphics, we need to create a window to draw in. However, creating windows are specific per operating system. OpenGL tries to abstract itself from creating windows, meaning it is preferred to use an external library. [GLFW][glfw] is a library, written in C, that handles windows across multiple platforms. Whether it be Mac, Linux, or Windows, we can count on GLFW to sort out our windows and handle input so we can work on graphics.
+Before doing anything graphical, we need a window to render in. However, creating windows is specific per operating system. OpenGL tries to abstract itself from creating windows - in other words OpenGL provides no functions to create a window - so the implementation is up to the local operating system. Instead of using the OS-specific API, we can use GLFW. [GLFW][glfw] is a library, written in C, that handles windows across multiple platforms. Whether it be Mac, Linux, or Windows, we can count on GLFW to sort out our windows and handle input so we can focus on graphics.
 
 
 

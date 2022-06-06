@@ -16,9 +16,10 @@ This repository contains projects that I did to learn OpenGL. In order to learn,
 6. [Coordinates and 3D space][6]
 7. [Moving in 3D space with a Camera][7]
 8. Practice
-   * [Selection Sort Algorithm Visualization][8]
-   * [Asteroids][9] (Retro Arcade Game)
-   * [Experimenting with Shaders][10]
+   * [8.1 Selection Sort Algorithm Visualization][8.1]
+   * [8.2 Asteroids][8.2] (Retro Arcade Game)
+   * [8.3 Experimenting with Shaders][8.3]
+9. [Frame Buffer Objects][9]
 
 
 [1]: https://github.com/TherieI/LearningOpenGL/tree/main/Projects/01.%20Base%20OpenGL%20Project
@@ -28,6 +29,7 @@ This repository contains projects that I did to learn OpenGL. In order to learn,
 [5]: https://github.com/TherieI/LearningOpenGL/tree/main/Projects/05.%20Transformations
 [6]: https://github.com/TherieI/LearningOpenGL/tree/main/Projects/06.%20Coordinates%20and%203D
 [7]: https://github.com/TherieI/LearningOpenGL/tree/main/Projects/07.%20Camera
-[8]: https://github.com/TherieI/LearningOpenGL/tree/main/Projects/08.%20Practice%20-%20Sorting%20Algoritm%20Visualizer
-[9]: https://github.com/TherieI/LearningOpenGL/tree/main/Projects/09.%20Practice%20-%20Asteroids
-[10]: https://github.com/TherieI/LearningOpenGL/tree/main/Projects/10.%20Practice%20-%20Complex%20Shaders
+[8.1]: https://github.com/TherieI/LearningOpenGL/tree/main/Projects/08.%20Practice%20-%20Sorting%20Algoritm%20Visualizer
+[8.2]: https://github.com/TherieI/LearningOpenGL/tree/main/Projects/09.%20Practice%20-%20Asteroids
+[8.3]: https://github.com/TherieI/LearningOpenGL/tree/main/Projects/10.%20Practice%20-%20Complex%20Shaders
+[9]: https://github.com/TherieI/LearningOpenGL/tree/main/Projects/11.%20Frame%20Buffer%20Objects

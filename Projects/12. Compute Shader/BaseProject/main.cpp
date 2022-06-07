@@ -1,16 +1,15 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-
 #include <shaders/shader.h>
-
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb/stb_image.h>
-
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
 #include <iostream>
+
+#include "Compute.h"
 
 // Handles Window size changes
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -93,6 +92,7 @@ int main() {
     stbi_set_flip_vertically_on_load(true);
     unsigned int texture;
     glGenTextures(1, &texture);
+    glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, texture);
     // set the texture wrapping/filtering options (on the currently bound texture object)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -114,6 +114,27 @@ int main() {
     stbi_image_free(data);
 
     triangleProgram.setInt("chadTexture", 0);
+    glBindVertexArray(0);
+
+    // ------------------------ Compute Shader ----------------
+    // initialise compute stuff
+    glm::vec3 dim(10, 1, 1);
+    ComputeShader compute_shader("shaders/compute.cs");
+    compute_shader.createTexture(GL_TEXTURE1, 10, 10);
+    compute_shader.use();
+    float values[10] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+    compute_shader.setValues(values, dim);
+    // inside the main render loop
+    compute_shader.use();
+    std::cout << "Dispatching" << std::endl;
+    compute_shader.dispatch(dim);
+    compute_shader.wait();
+    std::cout << "Dispatched" << std::endl;
+    std::vector<float> result = compute_shader.getValues(dim);
+    for (float r : result) {
+        std::cout << r << " ";
+    }
+    std::cout << std::endl;
 
     // RENDER LOOP
     while (!glfwWindowShouldClose(window)) {
@@ -124,15 +145,12 @@ int main() {
         glClearColor(0.1f, 0.3f, 0.6f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
+        glBindVertexArray(VAO);
+        triangleProgram.use();
+
         // bind textures on corresponding texture units
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texture);
-
-        // Activate shader
-        triangleProgram.use();
-        
-        // Bind the VAO
-        glBindVertexArray(VAO);
 
         // Draw triangle
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);

@@ -48,19 +48,19 @@ void ComputeShader::createTexture(GLenum active_texture, unsigned int width, uns
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     // create empty texture
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_FLOAT, NULL);
-    glBindImageTexture(0, texture, 0, GL_FALSE, 0, GL_READ_WRITE, GL_RGB);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_R32F, width, height, 0, GL_RED, GL_FLOAT, NULL);
+    glBindImageTexture(0, texture, 0, GL_FALSE, 0, GL_READ_WRITE, GL_R32F);
     glUseProgram(0);
 }
 
 void ComputeShader::setValues(float* values, glm::vec3 dim) {
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, dim.x, dim.y, dim.z, GL_RED, GL_FLOAT, values);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_R32F, dim.x, dim.y, dim.z, GL_RED, GL_FLOAT, values);
 }
 
 std::vector<float> ComputeShader::getValues(glm::vec3 dim) {
     unsigned int collection_size = dim.x * dim.y * dim.z;
     std::vector<float> compute_data(collection_size);
-    glGetTexImage(GL_TEXTURE_2D, 0, GL_RGB, GL_FLOAT, compute_data.data());
+    glGetTexImage(GL_TEXTURE_2D, 0, GL_RED, GL_FLOAT, compute_data.data());
     return compute_data;
 }
 
@@ -72,6 +72,7 @@ void ComputeShader::use() {
     glUseProgram(ID);
     glActiveTexture(active_texture);
     glBindTexture(GL_TEXTURE_2D, texture);
+    glBindImageTexture(0, texture, 0, GL_FALSE, 0, GL_READ_WRITE, GL_R32F);
 }
 
 void ComputeShader::dispatch(glm::vec3 dim) {

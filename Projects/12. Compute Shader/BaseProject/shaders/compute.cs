@@ -10,5 +10,5 @@ void main() {
     float in_val = imageLoad( out_image, pixel_coord ).r;
 
     // store new value in image
-    imageStore( out_image, pixel_coord, vec4( 2.0f, 0.0, 0.0, 0.0 ) );
+    imageStore( out_image, pixel_coord, vec4( in_val+1, 0.0f, 0.0f, 0.0f ) );
 }

@@ -21,7 +21,6 @@ void handleInput(GLFWwindow* window);
 const unsigned int WIDTH  = 800;
 const unsigned int HEIGHT = 600;
 
-
 int main() {
     // GLFW WINDOW HINTS
     glfwInit();
@@ -113,31 +112,29 @@ int main() {
     }
     stbi_image_free(data);
 
-    triangleProgram.setInt("chadTexture", 0);
+    // triangleProgram.setInt("chadTexture", 0);
     glBindVertexArray(0);
 
-    // ------------------------ Compute Shader ----------------
     // initialise compute stuff
+    float values[10] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
     glm::vec3 dim(10, 1, 1);
     ComputeShader compute_shader("shaders/compute.cs");
-    compute_shader.createTexture(GL_TEXTURE1, 10, 10);
-    compute_shader.use();
-    float values[10] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-    compute_shader.setValues(values, dim);
-    // inside the main render loop
-    compute_shader.use();
-    std::cout << "Dispatching" << std::endl;
-    compute_shader.dispatch(dim);
-    compute_shader.wait();
-    std::cout << "Dispatched" << std::endl;
-    std::vector<float> result = compute_shader.getValues(dim);
-    for (float r : result) {
-        std::cout << r << " ";
-    }
-    std::cout << std::endl;
+    compute_shader.createTexture(GL_TEXTURE1, 10, 1);
 
     // RENDER LOOP
     while (!glfwWindowShouldClose(window)) {
+        
+        // ------------------------ Compute Shader ----------------
+        compute_shader.use();
+        compute_shader.setValues(values, dim);
+        compute_shader.dispatch(dim);
+        compute_shader.wait();
+        std::vector<float> result = compute_shader.getValues(dim);
+        for (float r : result) {
+            std::cout << r << " ";
+        }
+        std::cout << std::endl;
+
         // Key Input
         handleInput(window);
 

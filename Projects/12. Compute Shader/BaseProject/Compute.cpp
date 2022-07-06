@@ -1,7 +1,6 @@
 #include "Compute.h"
 
-ComputeShader::ComputeShader(const char* computePath) {
-    this->active_texture = 0;
+ComputeShader::ComputeShader(const char* computePath, unsigned int textureWidth, unsigned int textureHeight, unsigned int activeTexture) {
 	std::string computeCode;
 	std::ifstream computeShaderFile;
 	computeShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
@@ -34,22 +33,24 @@ ComputeShader::ComputeShader(const char* computePath) {
     glAttachShader(ID, compute);
     glLinkProgram(ID);
     checkCompileErrors(ID, "PROGRAM");
-    // delete the shaders as they're linked into our program now and no longer necessery
+    // delete the shaders as they're linked into our program now and no longer necessary
     glDeleteShader(compute);
-}
 
-void ComputeShader::createTexture(GLenum active_texture, unsigned int width, unsigned int height) {
-    this->active_texture = active_texture;
+    // --------------------------------------------------------------------------------
+    texDim = glm::vec2(textureWidth, textureHeight);
+    
+    // Creating a texture for the compute shader to operate on
     glUseProgram(ID);
-    // generate texture
     glGenTextures(1, &texture);
-    glActiveTexture(active_texture);
+    glActiveTexture(activeTexture);
     glBindTexture(GL_TEXTURE_2D, texture);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     // create empty texture
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_R32F, width, height, 0, GL_RED, GL_FLOAT, NULL);
-    glBindImageTexture(0, texture, 0, GL_FALSE, 0, GL_READ_WRITE, GL_R32F);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, textureWidth, textureHeight, 0, GL_RGBA, GL_FLOAT, NULL);
+    glBindImageTexture(0, texture, 0, GL_FALSE, 0, GL_READ_WRITE, GL_RGBA32F);
     glUseProgram(0);
 }
 
@@ -65,18 +66,14 @@ std::vector<float> ComputeShader::getValues(glm::vec3 dim) {
 }
 
 void ComputeShader::use() {
-    if (active_texture == 0) {
-        std::cout << "ERROR::COMPUTE_SHADER_NO_TEXTURE: Create a texture before enabling the compute shader" << std::endl;
-        return;
-    }
     glUseProgram(ID);
-    glActiveTexture(active_texture);
+    glActiveTexture(activeTexture);
     glBindTexture(GL_TEXTURE_2D, texture);
-    glBindImageTexture(0, texture, 0, GL_FALSE, 0, GL_READ_WRITE, GL_R32F);
+    glBindImageTexture(0, texture, 0, GL_FALSE, 0, GL_READ_WRITE, GL_RGBA32F);
 }
 
-void ComputeShader::dispatch(glm::vec3 dim) {
-    glDispatchCompute(dim.x, dim.y, dim.z);
+void ComputeShader::dispatch() {
+    glDispatchCompute(texDim.x, texDim.y, 1);
 }
 
 void ComputeShader::wait() {

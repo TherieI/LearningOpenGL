@@ -12,15 +12,14 @@
 
 class ComputeShader {
 public:
-	unsigned int ID;
-	unsigned int texture;
-	GLenum active_texture;
-	ComputeShader(const char* computePath);
-	void createTexture(GLenum active_texture, unsigned int width, unsigned int height);
+	unsigned int ID, texture, activeTexture;
+	glm::vec2 texDim;
+	// A compute shader reading and writing to a texture of size width x height
+	ComputeShader(const char* computePath, unsigned int textureWidth, unsigned int textureHeight, unsigned int activeTexture);
 	void setValues(float* values, glm::vec3 dim);
 	std::vector<float> getValues(glm::vec3 dim);
 	void use();
-	void dispatch(glm::vec3 dim);
+	void dispatch();
 	void wait();
 
 private:

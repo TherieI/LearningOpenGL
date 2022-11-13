@@ -19,7 +19,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void handleInput(GLFWwindow* window);
 
 
-const unsigned int WIDTH  = 800;
+const unsigned int WIDTH = 800;
 const unsigned int HEIGHT = 600;
 
 
@@ -40,7 +40,7 @@ int main() {
     glfwMakeContextCurrent(window);
 
     // GLAD INIT
-    if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) {
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
         std::cout << "Failed to initialize GLAD\n";
         return -1;
     }
@@ -52,18 +52,19 @@ int main() {
 
     // VERTEX DATA
     float vertices[] = {
-         // positions         // colors         
-        -0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,  // top left
-         0.5f,  0.5f, 0.0f,   0.0f, 0.0f, 1.0f,  // top right
-         0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,  // bottom right
-        -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,  // bottom left
+        // positions         // colors         
+       -0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,  // top left
+        0.5f,  0.5f, 0.0f,   0.0f, 0.0f, 1.0f,  // top right
+        0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,  // bottom right
+       -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,  // bottom left
     };
     unsigned int indices[]{
         0, 1, 2,  // 1st triangle
         0, 2, 3,  // 2nd triangle
     };
 
-    // Creating Objects to send to GPU
+    // Creating buffers to store our vertex data and index data 
+    // Wrapping those buffers in a vertex array to attribute the data
     unsigned int VBO, VAO, EBO;
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
@@ -72,22 +73,22 @@ int main() {
     // Binding VAO 
     glBindVertexArray(VAO);
 
-    // Adding vertices to VBO
+    // Storing the contents of "vertices" in VBO
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), &vertices, GL_STATIC_DRAW);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-    // Specifies the location and data format of the bound VBO to use when rendering
+    // Adding pointers to different positions of vertices to distinguish the meaning behind the data
     // Positions
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*) 0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
     // Colors
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*) (3 * sizeof(float)));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
-    
+
     // Unbinding
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
@@ -95,20 +96,19 @@ int main() {
 
     // RENDER LOOP
     while (!glfwWindowShouldClose(window)) {
-        // Key Input
         handleInput(window);
 
-        // Rendering
+        // Set a background color and 
         glClearColor(0.1f, 0.3f, 0.6f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        // Activate shader
+        // Calls glUseProgram, binding our shaders
         triangleProgram.use();
 
-        // Bind the VAO
+        // Bind the Vertex Array Object so the program will use VAO's vertex data
         glBindVertexArray(VAO);
 
-        // Draw triangle
+        // Render based on our index data, calling glDrawElements instead of glDrawArrays
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
         glBindVertexArray(0);

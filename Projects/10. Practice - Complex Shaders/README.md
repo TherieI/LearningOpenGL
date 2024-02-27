@@ -198,9 +198,9 @@ void main() {
 
 
 
-## Shaders I made
+## Shaders I edited
 
-Most of these shaders are shaders made by others that I tweaked. I believe I tweaked them enough to the point where they are arguably different.
+Existing shaders that I tweaked.
 
 
 
